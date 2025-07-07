@@ -1,38 +1,22 @@
+import { postService } from '$lib/supabase.js';
+import { error } from '@sveltejs/kit';
+import { isSupabaseError } from '$lib/types.js';
+
 export async function load({ params }) {
-    const { slug } = params
-    
-    // 실제로는 데이터베이스에서 slug로 포스트 조회
-    const post = {
-      title: "SvelteKit으로 블로그 만들기",
-      content: `
-  # SvelteKit으로 블로그 만들기
-  
-  SvelteKit은 Svelte를 기반으로 한 풀스택 웹 프레임워크입니다.
-  
-  ## 특징
-  
-  - **빠른 성능**: 컴파일 타임 최적화
-  - **간단한 라우팅**: 파일 기반 라우팅 시스템
-  - **SSR 지원**: 서버 사이드 렌더링
-  - **정적 사이트 생성**: JAMstack 아키텍처 지원
-  
-  ## 시작하기
-  
-  \`\`\`bash
-  npm create svelte@latest my-blog
-  cd my-blog
-  npm install
-  npm run dev
-  \`\`\`
-  
-  이제 여러분도 SvelteKit으로 멋진 블로그를 만들어보세요!
-      `,
-      date: "2025-01-15",
-      category: "Tutorial",
-      slug
-    }
-    
-    return {
-      post
-    }
-  }
+	try {
+		const post = await postService.getPostBySlug(params.slug);
+
+		return {
+			post
+		};
+	} catch (err) {
+		// 타입 가드를 사용한 안전한 에러 처리
+		if (isSupabaseError(err) && err.code === 'PGRST116') {
+			// 포스트를 찾을 수 없음
+			throw error(404, '포스트를 찾을 수 없습니다.');
+		}
+
+		console.error('Error loading post:', err);
+		throw error(500, '포스트를 불러오는 중 오류가 발생했습니다.');
+	}
+}
