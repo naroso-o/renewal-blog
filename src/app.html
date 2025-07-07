@@ -6,6 +6,18 @@
 	<link rel="icon" href="%sveltekit.assets%/favicon.svg" />
 	<meta name="viewport" content="width=device-width, initial-scale=1" />
 	<link rel="stylesheet" href="./src/app.css" />
+
+	<!-- 로컬 폰트 미리 로드 (성능 최적화) -->
+	<link rel="preload" href="/fonts/BusanFont.ttf" as="font" type="font/ttf" crossorigin>
+	<link rel="preload" href="/fonts/Orbit.ttf" as="font" type="font/ttf" crossorigin>
+
+	<!-- 폴백용 Google Fonts -->
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link
+		href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap"
+		rel="stylesheet">
+
 	%sveltekit.head%
 </head>
 

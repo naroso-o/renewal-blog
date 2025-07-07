@@ -36,7 +36,7 @@
 </svelte:head>
 
 <section class="hero">
-	<h1>안녕하세요! 👋</h1>
+	<h2>안녕하세요! 👋</h2>
 	<p>개발과 기술에 대한 이야기를 나누는 공간입니다.</p>
 	<div class="hero-buttons">
 		<a href="/blog" class="btn-primary">모든 글 보기</a>
@@ -148,7 +148,7 @@
 		}
 	}
 
-	.hero h1 {
+	.hero h2 {
 		font-size: clamp(2.5rem, 5vw, 4rem);
 		margin-bottom: 1rem;
 		font-weight: 800;
