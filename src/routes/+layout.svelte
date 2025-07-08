@@ -3,104 +3,39 @@
 	import '../app.css';
 </script>
 
-<div class="app">
-	<header>
-		<nav>
-			<a href="/" class="logo">내 블로그</a>
-			<div class="nav-links">
-				<a href="/">홈</a>
-				<a href="/blog">블로그</a>
-				<a href="/about">소개</a>
+<div class="flex flex-col min-h-screen">
+	<header
+		class="sticky top-0 z-50 px-4 py-4 md:px-8 bg-white/95 backdrop-blur-md border-b border-gray-200"
+	>
+		<nav
+			class="flex flex-col md:flex-row justify-between items-center max-w-6xl mx-auto gap-4 md:gap-0"
+		>
+			<a href="/" class="text-gray-800 no-underline tracking-tight">홈</a>
+			<div class="flex gap-6 md:gap-8">
+				<a
+					href="/blog"
+					class="text-gray-600 no-underline transition-colors duration-200 tracking-normal hover:text-blue-500"
+					>블로그</a
+				>
+				<a
+					href="/about"
+					class="text-gray-600 no-underline transition-colors duration-200 tracking-normal hover:text-blue-500"
+					>소개</a
+				>
+				<a
+					href="/admin"
+					class="text-gray-600 no-underline transition-colors duration-200 tracking-normal hover:text-blue-500"
+					>관리자</a
+				>
 			</div>
 		</nav>
 	</header>
 
-	<main>
+	<main class="flex-1">
 		<slot />
 	</main>
 
-	<footer>
-		<p>&copy; 2025 My Blog. 개발과 기술을 사랑하는 블로그입니다.</p>
+	<footer class="px-8 py-8 bg-gray-50 text-center border-t border-gray-200">
+		<p class="m-0 text-gray-500">&copy; 2025 naroso-o.blog</p>
 	</footer>
 </div>
-
-<style>
-	/* 레이아웃과 색상만 정의 - 폰트는 글로벌 CSS에서 관리 */
-	.app {
-		display: flex;
-		flex-direction: column;
-		min-height: 100vh;
-	}
-
-	header {
-		padding: 1rem 2rem;
-		background: rgba(255, 255, 255, 0.95);
-		backdrop-filter: blur(10px);
-		border-bottom: 1px solid #e5e7eb;
-		position: sticky;
-		top: 0;
-		z-index: 100;
-	}
-
-	nav {
-		display: flex;
-		justify-content: space-between;
-		align-items: center;
-		max-width: 1200px;
-		margin: 0 auto;
-	}
-
-	.logo {
-		color: #1f2937;
-		text-decoration: none;
-		letter-spacing: var(--tracking-tight);
-	}
-
-	.nav-links {
-		display: flex;
-		gap: 2rem;
-	}
-
-	.nav-links a {
-		color: #4b5563;
-		text-decoration: none;
-		transition: color 0.2s ease;
-		letter-spacing: var(--tracking-normal);
-	}
-
-	.nav-links a:hover {
-		color: #3b82f6;
-	}
-
-	main {
-		flex: 1;
-		padding: 0;
-	}
-
-	footer {
-		padding: 2rem;
-		background: #f9fafb;
-		text-align: center;
-		border-top: 1px solid #e5e7eb;
-	}
-
-	footer p {
-		margin: 0;
-		color: #6b7280;
-	}
-
-	@media (max-width: 768px) {
-		header {
-			padding: 1rem;
-		}
-
-		nav {
-			flex-direction: column;
-			gap: 1rem;
-		}
-
-		.nav-links {
-			gap: 1.5rem;
-		}
-	}
-</style>

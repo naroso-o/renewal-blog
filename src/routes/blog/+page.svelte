@@ -26,8 +26,8 @@
 </script>
 
 <svelte:head>
-	<title>블로그 - 내 블로그</title>
-	<meta name="description" content="모든 블로그 포스트를 확인하세요." />
+	<title>블로그 - naroso-o.blog</title>
+	<meta name="description" content="developer naroso-o's blog" />
 </svelte:head>
 
 <div class="container">

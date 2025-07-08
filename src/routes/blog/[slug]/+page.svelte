@@ -60,7 +60,7 @@
 </script>
 
 <svelte:head>
-	<title>{post.title} - 내 블로그</title>
+	<title>{post.title} - naroso-o.blog</title>
 	<meta name="description" content={post.excerpt || post.title} />
 
 	<!-- Open Graph 메타태그 -->
@@ -76,45 +76,55 @@
 	{/if}
 </svelte:head>
 
-<div class="container">
+<div class="max-w-4xl mx-auto px-4 py-8 leading-relaxed">
 	<!-- 네비게이션 -->
-	<nav class="breadcrumb">
-		<a href="/">홈</a>
-		<span class="separator">›</span>
-		<a href="/blog">블로그</a>
-		<span class="separator">›</span>
-		<span class="current">{post.title}</span>
+	<nav class="mb-8 text-sm text-gray-500">
+		<a href="/" class="text-blue-500 hover:underline">홈</a>
+		<span class="mx-2 text-gray-300">›</span>
+		<a href="/blog" class="text-blue-500 hover:underline">블로그</a>
+		<span class="mx-2 text-gray-300">›</span>
+		<span class="text-gray-700 font-medium">{post.title}</span>
 	</nav>
 
 	<!-- 포스트 헤더 -->
-	<header class="post-header">
+	<header class="mb-12 text-center">
 		{#if post.featured}
-			<div class="featured-badge">⭐ 추천 포스트</div>
+			<div
+				class="inline-block bg-gradient-to-r from-yellow-100 to-yellow-200 text-yellow-700 px-4 py-2 rounded-full text-sm font-semibold mb-4 shadow-sm"
+			>
+				⭐ 추천 포스트
+			</div>
 		{/if}
 
-		<h1 class="post-title">{post.title}</h1>
+		<h1 class="text-3xl md:text-5xl font-extrabold text-gray-900 leading-tight mb-6">
+			{post.title}
+		</h1>
 
-		<div class="post-meta">
-			<div class="meta-left">
-				<time class="publish-date">
+		<div class="flex flex-col gap-4 items-center">
+			<div class="flex flex-wrap gap-4 justify-center text-sm text-gray-500">
+				<time class="flex items-center">
 					📅 {formatRelativeTime(post.published_at || post.created_at)}
 				</time>
 
-				<span class="view-count">
+				<span class="flex items-center">
 					👁️ {post.view_count} 조회
 				</span>
 
 				{#if post.updated_at !== post.created_at}
-					<span class="updated-date">
+					<span class="flex items-center">
 						✏️ {formatRelativeTime(post.updated_at)} 수정
 					</span>
 				{/if}
 			</div>
 
 			{#if post.tags && post.tags.length > 0}
-				<div class="tags">
+				<div class="flex flex-wrap gap-2 justify-center">
 					{#each post.tags as tag}
-						<a href="/blog/tag/{tag}" class="tag">#{tag}</a>
+						<a
+							href="/blog/tag/{tag}"
+							class="bg-gray-100 text-gray-700 px-3 py-1 rounded-full text-sm hover:bg-gray-200 transition-colors duration-200"
+							>#{tag}</a
+						>
 					{/each}
 				</div>
 			{/if}
@@ -122,366 +132,96 @@
 	</header>
 
 	<!-- 포스트 내용 -->
-	<article class="post-content">
+	<article class="mb-12">
 		{#if post.excerpt}
-			<div class="excerpt">
-				<strong>요약:</strong>
-				{post.excerpt}
+			<div class="bg-blue-50 border-l-4 border-blue-500 p-6 mb-8 rounded-r-lg">
+				<strong class="text-blue-900">요약:</strong>
+				<span class="text-blue-800">{post.excerpt}</span>
 			</div>
 		{/if}
 
-		<div class="content">
+		<div class="prose prose-lg max-w-none">
 			{@html parseMarkdown(post.content)}
 		</div>
 	</article>
 
 	<!-- 포스트 푸터 -->
-	<footer class="post-footer">
-		<div class="feedback">
-			<p class="feedback-title">이 글이 도움이 되었나요?</p>
-			<div class="feedback-buttons">
-				<button class="feedback-btn helpful"> 👍 도움됨 </button>
-				<button class="feedback-btn share"> 🔗 공유하기 </button>
-				<button class="feedback-btn comment"> 💬 댓글 남기기 </button>
+	<footer class="border-t border-gray-200 pt-8">
+		<div class="text-center mb-8">
+			<p class="text-lg text-gray-700 mb-4">이 글이 도움이 되었나요?</p>
+			<div class="flex gap-4 justify-center flex-wrap">
+				<button
+					class="px-6 py-3 bg-gray-100 border border-gray-300 text-gray-700 rounded-lg text-sm hover:bg-green-50 hover:border-green-300 hover:text-green-700 transition-all duration-200"
+				>
+					👍 도움됨
+				</button>
+				<button
+					class="px-6 py-3 bg-gray-100 border border-gray-300 text-gray-700 rounded-lg text-sm hover:bg-blue-50 hover:border-blue-300 hover:text-blue-700 transition-all duration-200"
+				>
+					🔗 공유하기
+				</button>
+				<button
+					class="px-6 py-3 bg-gray-100 border border-gray-300 text-gray-700 rounded-lg text-sm hover:bg-yellow-50 hover:border-yellow-300 hover:text-yellow-700 transition-all duration-200"
+				>
+					💬 댓글 남기기
+				</button>
 			</div>
 		</div>
 
-		<div class="navigation">
-			<a href="/blog" class="back-to-list"> ← 블로그 목록으로 돌아가기 </a>
+		<div class="text-center">
+			<a href="/blog" class="text-gray-500 hover:text-blue-500 transition-colors duration-200">
+				← 블로그 목록으로 돌아가기
+			</a>
 		</div>
 	</footer>
 </div>
 
 <style>
-	.container {
-		max-width: 800px;
-		margin: 0 auto;
-		padding: 2rem 1rem;
-		line-height: 1.7;
-	}
-
-	/* 브래드크럼 네비게이션 */
-	.breadcrumb {
-		margin-bottom: 2rem;
-		font-size: 0.9rem;
-		color: #6b7280;
-	}
-
-	.breadcrumb a {
-		color: #3b82f6;
-		text-decoration: none;
-	}
-
-	.breadcrumb a:hover {
-		text-decoration: underline;
-	}
-
-	.separator {
-		margin: 0 0.5rem;
-		color: #d1d5db;
-	}
-
-	.current {
-		color: #374151;
-		font-weight: 500;
-	}
-
-	/* 포스트 헤더 */
-	.post-header {
-		margin-bottom: 3rem;
-		text-align: center;
-	}
-
-	.featured-badge {
-		display: inline-block;
-		background: linear-gradient(135deg, #fef3c7, #fde68a);
-		color: #d97706;
-		padding: 0.5rem 1rem;
-		border-radius: 25px;
-		font-size: 0.875rem;
-		font-weight: 600;
-		margin-bottom: 1rem;
-		box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-	}
-
-	.post-title {
-		font-size: clamp(2rem, 5vw, 3rem);
-		font-weight: 800;
-		color: #111827;
-		line-height: 1.2;
-		margin-bottom: 1.5rem;
-	}
-
-	.post-meta {
-		display: flex;
-		flex-direction: column;
-		gap: 1rem;
-		align-items: center;
-	}
-
-	.meta-left {
-		display: flex;
-		flex-wrap: wrap;
-		gap: 1rem;
-		justify-content: center;
-		font-size: 0.9rem;
-		color: #6b7280;
-	}
-
-	.tags {
-		display: flex;
-		flex-wrap: wrap;
-		gap: 0.5rem;
-		justify-content: center;
-	}
-
-	.tag {
-		background: #f3f4f6;
-		color: #374151;
-		padding: 0.25rem 0.75rem;
-		border-radius: 20px;
-		font-size: 0.875rem;
-		text-decoration: none;
-		transition: all 0.2s ease;
-	}
-
-	.tag:hover {
-		background: #e5e7eb;
-		transform: translateY(-1px);
-	}
-
-	/* 포스트 내용 */
-	.post-content {
-		margin-bottom: 3rem;
-	}
-
-	.excerpt {
-		background: #f8fafc;
-		border-left: 4px solid #3b82f6;
-		padding: 1.5rem;
-		margin-bottom: 2rem;
-		border-radius: 0 8px 8px 0;
-		font-size: 1.1rem;
-		color: #374151;
-	}
-
 	/* 마크다운 스타일링 */
-	:global(.content h1) {
-		font-size: 2.25rem;
-		font-weight: 700;
-		color: #111827;
-		margin: 2rem 0 1rem 0;
-		line-height: 1.2;
+	:global(.prose h1) {
+		@apply text-4xl font-bold text-gray-900 mt-8 mb-4 leading-tight;
 	}
 
-	:global(.content h2) {
-		font-size: 1.875rem;
-		font-weight: 600;
-		color: #111827;
-		margin: 2rem 0 1rem 0;
-		line-height: 1.3;
-		border-bottom: 2px solid #e5e7eb;
-		padding-bottom: 0.5rem;
+	:global(.prose h2) {
+		@apply text-3xl font-semibold text-gray-900 mt-8 mb-4 leading-tight border-b-2 border-gray-200 pb-2;
 	}
 
-	:global(.content h3) {
-		font-size: 1.5rem;
-		font-weight: 600;
-		color: #374151;
-		margin: 1.5rem 0 0.75rem 0;
+	:global(.prose h3) {
+		@apply text-2xl font-semibold text-gray-800 mt-6 mb-3;
 	}
 
-	:global(.content p) {
-		margin-bottom: 1.5rem;
-		color: #374151;
+	:global(.prose p) {
+		@apply mb-6 text-gray-700;
 	}
 
-	:global(.content code) {
-		background: #f1f5f9;
-		color: #e11d48;
-		padding: 0.125rem 0.375rem;
-		border-radius: 4px;
-		font-size: 0.875em;
-		font-family:
-			'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, 'Courier New', monospace;
+	:global(.prose code) {
+		@apply bg-gray-100 text-red-600 px-1 py-0.5 rounded text-sm font-mono;
 	}
 
-	:global(.content pre) {
-		background: #1e293b;
-		color: #e2e8f0;
-		padding: 1.5rem;
-		border-radius: 8px;
-		overflow-x: auto;
-		margin: 1.5rem 0;
-		font-size: 0.875rem;
-		line-height: 1.5;
+	:global(.prose pre) {
+		@apply bg-gray-900 text-gray-100 p-6 rounded-lg overflow-x-auto my-6 text-sm leading-relaxed;
 	}
 
-	:global(.content pre code) {
-		background: none;
-		color: inherit;
-		padding: 0;
-		border-radius: 0;
-		font-size: inherit;
+	:global(.prose pre code) {
+		@apply bg-transparent text-inherit p-0 rounded-none text-inherit;
 	}
 
-	:global(.content a) {
-		color: #3b82f6;
-		text-decoration: none;
-		border-bottom: 1px solid transparent;
-		transition: border-color 0.2s ease;
+	:global(.prose a) {
+		@apply text-blue-500 no-underline border-b border-transparent hover:border-blue-500 transition-colors duration-200;
 	}
 
-	:global(.content a:hover) {
-		border-bottom-color: #3b82f6;
+	:global(.prose strong) {
+		@apply font-semibold text-gray-900;
 	}
 
-	:global(.content strong) {
-		font-weight: 600;
-		color: #111827;
-	}
-
-	:global(.content em) {
-		font-style: italic;
-		color: #6b7280;
-	}
-
-	/* 포스트 푸터 */
-	.post-footer {
-		border-top: 1px solid #e5e7eb;
-		padding-top: 2rem;
-	}
-
-	.feedback {
-		text-align: center;
-		margin-bottom: 2rem;
-	}
-
-	.feedback-title {
-		font-size: 1.1rem;
-		color: #374151;
-		margin-bottom: 1rem;
-	}
-
-	.feedback-buttons {
-		display: flex;
-		gap: 1rem;
-		justify-content: center;
-		flex-wrap: wrap;
-	}
-
-	.feedback-btn {
-		background: #f9fafb;
-		border: 1px solid #d1d5db;
-		color: #374151;
-		padding: 0.75rem 1.5rem;
-		border-radius: 8px;
-		font-size: 0.9rem;
-		cursor: pointer;
-		transition: all 0.2s ease;
-	}
-
-	.feedback-btn:hover {
-		background: #f3f4f6;
-		transform: translateY(-1px);
-		box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-	}
-
-	.feedback-btn.helpful:hover {
-		background: #ecfdf5;
-		border-color: #10b981;
-		color: #059669;
-	}
-
-	.feedback-btn.share:hover {
-		background: #eff6ff;
-		border-color: #3b82f6;
-		color: #2563eb;
-	}
-
-	.feedback-btn.comment:hover {
-		background: #fef3c7;
-		border-color: #f59e0b;
-		color: #d97706;
-	}
-
-	.navigation {
-		text-align: center;
-	}
-
-	.back-to-list {
-		color: #6b7280;
-		text-decoration: none;
-		font-size: 0.9rem;
-		transition: color 0.2s ease;
-	}
-
-	.back-to-list:hover {
-		color: #3b82f6;
+	:global(.prose em) {
+		@apply italic text-gray-600;
 	}
 
 	/* 반응형 디자인 */
 	@media (max-width: 768px) {
-		.container {
-			padding: 1rem;
-		}
-
-		.post-meta {
-			align-items: flex-start;
-		}
-
-		.meta-left {
-			justify-content: flex-start;
-			flex-direction: column;
-			gap: 0.5rem;
-		}
-
-		.tags {
-			justify-content: flex-start;
-		}
-
-		.feedback-buttons {
-			flex-direction: column;
-			align-items: center;
-		}
-
-		.feedback-btn {
-			width: 100%;
-			max-width: 200px;
-		}
-
-		:global(.content pre) {
-			padding: 1rem;
-			font-size: 0.8rem;
-		}
-	}
-
-	/* 다크모드 대응 (선택사항) */
-	@media (prefers-color-scheme: dark) {
-		.container {
-			color: #e5e7eb;
-		}
-
-		.post-title {
-			color: #f9fafb;
-		}
-
-		.excerpt {
-			background: #374151;
-			color: #e5e7eb;
-		}
-
-		:global(.content h1),
-		:global(.content h2) {
-			color: #f9fafb;
-		}
-
-		:global(.content h3) {
-			color: #d1d5db;
-		}
-
-		:global(.content p) {
-			color: #d1d5db;
+		:global(.prose pre) {
+			@apply p-4 text-xs;
 		}
 	}
 </style>
