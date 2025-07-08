@@ -5,6 +5,20 @@ export interface SupabaseError {
 	hint?: string;
 }
 
+export interface Post {
+	id: string;
+	title: string;
+	slug: string;
+	excerpt: string;
+	content: string;
+	date: string;
+	view_count: number;
+	tags?: string[];
+	featured?: boolean;
+	created_at: string;
+	updated_at: string;
+}
+
 // 타입 가드 함수
 export function isSupabaseError(error: unknown): error is SupabaseError {
 	return typeof error === 'object' && error !== null && 'code' in error;

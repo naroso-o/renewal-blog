@@ -13,14 +13,14 @@
 			<a href="/" class="text-gray-800 no-underline tracking-tight">홈</a>
 			<div class="flex gap-6 md:gap-8">
 				<a
+					href="/dev"
+					class="text-gray-600 no-underline transition-colors duration-200 tracking-normal hover:text-blue-500"
+					>개발 로그</a
+				>
+				<a
 					href="/blog"
 					class="text-gray-600 no-underline transition-colors duration-200 tracking-normal hover:text-blue-500"
 					>블로그</a
-				>
-				<a
-					href="/about"
-					class="text-gray-600 no-underline transition-colors duration-200 tracking-normal hover:text-blue-500"
-					>소개</a
 				>
 				<a
 					href="/admin"

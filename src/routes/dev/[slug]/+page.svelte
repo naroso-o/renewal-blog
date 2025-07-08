@@ -169,8 +169,8 @@
 		</div>
 
 		<div class="text-center">
-			<a href="/blog" class="text-gray-500 hover:text-blue-500 transition-colors duration-200">
-				← 블로그 목록으로 돌아가기
+			<a href="/dev" class="text-gray-500 hover:text-blue-500 transition-colors duration-200">
+				← 개발 로그로 돌아가기
 			</a>
 		</div>
 	</footer>
