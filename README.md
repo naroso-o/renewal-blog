@@ -1,38 +1,53 @@
-# sv
+# My Blog
 
-Everything you need to build a Svelte project, powered by [`sv`](https://github.com/sveltejs/cli).
+SvelteKit과 Supabase를 사용한 블로그 애플리케이션입니다.
 
-## Creating a project
+## 설정 방법
 
-If you're seeing this, you've probably already done this step. Congrats!
+### 1. Supabase 설정
 
-```bash
-# create a new project in the current directory
-npx sv create
+1. [Supabase](https://supabase.com)에서 새 프로젝트를 생성합니다.
+2. 프로젝트 설정에서 URL과 API 키를 복사합니다.
+3. 프로젝트 루트에 `.env` 파일을 생성하고 다음 내용을 추가합니다:
 
-# create a new project in my-app
-npx sv create my-app
+```env
+VITE_SUPABASE_URL=your_supabase_url_here
+VITE_SUPABASE_ANON_KEY=your_supabase_anon_key_here
 ```
 
-## Developing
-
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
+## 개발
 
 ```bash
-npm run dev
+# 의존성 설치
+pnpm install
 
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
+# 개발 서버 실행
+pnpm dev
+
+# 빌드
+pnpm build
 ```
 
-## Building
+## 기능
 
-To create a production version of your app:
+- **마크다운 에디터**: 실시간 미리보기와 함께
+- **관리자 인증**: Supabase 인증 기반
+- **권한 관리**: 관리자/슈퍼 관리자 역할 구분
+- **보안**: RLS 정책으로 데이터 보호
+- **반응형 디자인**: 모바일/데스크톱 모두 지원
 
-```bash
-npm run build
-```
+## 관리자 권한
 
-You can preview the production build with `npm run preview`.
+- 블로그 포스트 작성/수정/삭제
 
-> To deploy your app, you may need to install an [adapter](https://svelte.dev/docs/kit/adapters) for your target environment.
+## 보안
+
+- Row Level Security (RLS) 활성화
+- 인증된 관리자만 포스트 작성 가능
+- 슈퍼 관리자만 관리자 계정 관리 가능
+
+## 관리자 설정 순서
+
+1. **회원가입**: `/admin`에서 계정 생성
+2. **이메일 확인**: Supabase에서 이메일 확인
+3. **블로그 포스트 작성**: 관리자 권한으로 접근 가능
