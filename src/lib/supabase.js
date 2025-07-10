@@ -4,7 +4,10 @@ import { createClient } from '@supabase/supabase-js';
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
 const supabaseKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
 
-export const supabase = createClient(supabaseUrl, supabaseKey);
+// 빌드 시점 오류 방지를 위한 더미 클라이언트
+export const supabase = supabaseUrl && supabaseKey 
+  ? createClient(supabaseUrl, supabaseKey)
+  : createClient('https://dummy.supabase.co', 'dummy-key');
 
 // 관리자 관련 함수들
 export const adminService = {
