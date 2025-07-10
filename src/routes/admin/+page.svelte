@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 	import Signin from '$lib/components/Signin.svelte';
 	import BlogEditor from '$lib/components/BlogEditor.svelte';
 	import { supabase, adminService } from '$lib/supabase.js';

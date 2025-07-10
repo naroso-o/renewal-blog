@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 	import { marked } from 'marked';
 	import { supabase } from '$lib/supabase.js';
 	import { browser } from '$app/environment';

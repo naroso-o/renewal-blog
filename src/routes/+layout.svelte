@@ -1,8 +1,3 @@
-<!-- src/routes/+layout.svelte -->
-<script>
-	import '../app.css';
-</script>
-
 <div class="flex flex-col min-h-screen">
 	<header
 		class="sticky top-0 z-50 px-4 py-4 md:px-8 bg-white/95 backdrop-blur-md border-b border-gray-200"
