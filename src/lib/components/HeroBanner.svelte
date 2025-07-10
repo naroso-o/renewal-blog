@@ -33,6 +33,7 @@
 </section>
 
 <style>
+	@import '../../app.css';
 	/* 빗방울 애니메이션 */
 	.raindrop {
 		position: absolute;
