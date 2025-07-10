@@ -49,7 +49,7 @@
 					{/if} -->
 					<h3 class="text-2xl font-semibold">
 						<a
-							href="${base}/dev/{post.slug}"
+							href="{base}/dev/{post.slug}"
 							class="text-gray-900 hover:text-primary-600 transition-colors duration-200"
 							>{post.title}</a
 						>
