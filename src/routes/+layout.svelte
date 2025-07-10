@@ -34,3 +34,7 @@
 		<p class="m-0 text-gray-500">&copy; 2025 naroso-o.blog</p>
 	</footer>
 </div>
+
+<style>
+	@import '../app.css';
+</style>

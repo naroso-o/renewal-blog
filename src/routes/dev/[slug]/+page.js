@@ -2,6 +2,9 @@ import { postService } from '$lib/supabase.js';
 import { error } from '@sveltejs/kit';
 import { isSupabaseError } from '$lib/types.js';
 
+// 동적 라우트는 prerender하지 않음
+export const prerender = false;
+
 export async function load({ params }) {
 	try {
 		const post = await postService.getPostBySlug(params.slug);

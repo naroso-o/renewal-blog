@@ -33,8 +33,6 @@
 </section>
 
 <style>
-	/* app.css의 CSS 변수 사용 */
-
 	/* 빗방울 애니메이션 */
 	.raindrop {
 		position: absolute;

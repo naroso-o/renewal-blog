@@ -176,7 +176,6 @@
 </div>
 
 <style>
-	@reference '../../../app.css';
 	/* 마크다운 스타일링 */
 	:global(.prose h1) {
 		@apply text-4xl font-bold text-gray-900 mt-8 mb-4 leading-tight;
