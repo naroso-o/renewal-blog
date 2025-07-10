@@ -1,26 +1,10 @@
-<div class="container">
-	<header class="about-header">
-		<h1>블로그</h1>
-		<p class="subtitle">일상 이야기</p>
-	</header>
+<script>
+	import PageHeader from '$lib/components/PageHeader.svelte';
+</script>
+
+<div class="max-w-4xl mx-auto px-4 py-8">
+	<PageHeader title="블로그" description="일상을 기록합니다." />
 </div>
 
 <style>
-	.container {
-		max-width: 800px;
-		margin: 0 auto;
-		padding: 2rem 1rem;
-	}
-
-	.about-header {
-		text-align: center;
-		margin-bottom: 3rem;
-	}
-
-	.about-header h1 {
-		color: #1a202c;
-		font-size: 2.5rem;
-		font-weight: 700;
-		margin-bottom: 0.5rem;
-	}
 </style>

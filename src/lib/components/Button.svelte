@@ -1,17 +1,17 @@
 <script lang="ts">
-	export let href: string;
 	export let variant: 'fill' | 'outline' = 'fill';
 	export let size: 'sm' | 'md' | 'lg' = 'md';
+	export let onclick: () => void = () => {};
 
 	// 기본 클래스
 	let baseClasses =
-		'inline-flex items-center justify-center font-semibold transition-all duration-300 rounded-full no-underline';
+		'inline-flex cursor-pointer whitespace-nowrap items-center justify-center font-semibold transition-all duration-300 rounded-xl no-underline';
 
 	// 크기별 클래스
 	let sizeClasses = {
-		sm: 'px-4 py-2 text-sm',
-		md: 'px-8 py-3 text-base',
-		lg: 'px-10 py-4 text-lg'
+		sm: 'px-4 py-2 text-sm max-w-24',
+		md: 'px-8 py-3 text-base max-w-32',
+		lg: 'px-10 py-4 text-lg max-w-40'
 	};
 
 	// 스타일별 클래스
@@ -24,18 +24,9 @@
 	$: buttonClasses = `${baseClasses} ${sizeClasses[size]} ${variantClasses[variant]}`;
 </script>
 
-<a {href} class={buttonClasses}>
+<button {onclick} class={buttonClasses}>
 	<slot />
-</a>
+</button>
 
 <style>
-	/* 전역 링크 스타일 무시 */
-	a {
-		text-decoration: none !important;
-	}
-
-	a:hover {
-		text-decoration: none !important;
-		color: inherit !important;
-	}
 </style>

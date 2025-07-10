@@ -63,7 +63,7 @@
 	<section class="max-w-6xl mx-auto px-8 pb-16">
 		<div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4">
 			<h2 class="text-3xl font-bold text-gray-900">📝 최근 글</h2>
-			<a href="/blog" class="font-medium transition-colors duration-200 hover:text-primary-500"
+			<a href="/dev" class="font-medium transition-colors duration-200 hover:text-primary-500"
 				>전체 보기 →</a
 			>
 		</div>

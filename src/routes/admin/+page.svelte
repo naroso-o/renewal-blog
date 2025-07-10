@@ -3,6 +3,7 @@
 	import BlogEditor from '$lib/components/BlogEditor.svelte';
 	import { supabase, adminService } from '$lib/supabase.js';
 	import { onMount } from 'svelte';
+	import Button from '$lib/components/Button.svelte';
 
 	let isSignedIn = false;
 	let isAdmin = false;
@@ -45,21 +46,9 @@
 	</div>
 {:else if isSignedIn && isAdmin}
 	<div class="min-h-screen bg-gray-50">
-		<!-- 헤더 -->
-		<header class="bg-white shadow-sm border-b">
-			<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-				<div class="flex justify-between items-center py-4">
-					<h1 class="text-xl font-semibold text-gray-900">블로그 관리자</h1>
-					<button
-						on:click={handleSignOut}
-						class="px-4 py-2 text-sm bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
-					>
-						로그아웃
-					</button>
-				</div>
-			</div>
+		<header class="flex justify-end p-4">
+			<Button size="sm" onclick={handleSignOut}>로그아웃</Button>
 		</header>
-
 		<!-- 메인 콘텐츠 -->
 		<main>
 			<BlogEditor />
