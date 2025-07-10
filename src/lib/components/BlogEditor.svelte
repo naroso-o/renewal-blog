@@ -2,6 +2,7 @@
 	import { marked } from 'marked';
 	import { supabase } from '$lib/supabase.js';
 	import { browser } from '$app/environment';
+	import Button from './Button.svelte';
 
 	let title = '';
 	let content = '';
@@ -68,7 +69,7 @@
 	}
 </script>
 
-<div class="max-w-6xl mx-auto p-6">
+<div class="max-w-7xl mx-auto p-6">
 	<h1 class="text-3xl font-bold mb-6 text-gray-800">블로그 에디터</h1>
 
 	<div class="space-y-6">
@@ -86,13 +87,10 @@
 
 		<!-- 에디터 컨트롤 -->
 		<div class="flex items-center justify-between">
-			<label class="block text-sm font-medium text-gray-700"> 내용 </label>
-			<button
-				on:click={togglePreview}
-				class="px-4 py-2 text-sm bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors"
-			>
+			<label for="content" class="block text-sm font-medium text-gray-700"> 내용 </label>
+			<Button type="button" size="sm" onclick={togglePreview} variant="outline">
 				{showPreview ? '편집 모드' : '미리보기'}
-			</button>
+			</Button>
 		</div>
 
 		<!-- 에디터/미리보기 영역 -->
@@ -131,13 +129,10 @@
 
 		<!-- 저장 버튼 -->
 		<div class="flex items-center space-x-4">
-			<button
-				on:click={savePost}
-				disabled={isSaving}
-				class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-			>
-				{isSaving ? '저장 중...' : '저장'}
-			</button>
+			<Button type="submit" size="md" onclick={savePost}>저장</Button>
+			{#if isSaving}
+				<span class="text-sm text-gray-600">저장 중...</span>
+			{/if}
 
 			{#if saveMessage}
 				<span class="text-sm {saveMessage.includes('성공') ? 'text-green-600' : 'text-red-600'}">
@@ -181,14 +176,16 @@
 	}
 
 	:global(.prose code) {
-		background-color: #f3f4f6;
+		background-color: #1f2937;
+		color: #f9fafb;
 		padding: 0.125rem 0.25rem;
 		border-radius: 0.25rem;
 		font-size: 0.875rem;
 	}
 
 	:global(.prose pre) {
-		background-color: #f3f4f6;
+		background-color: #1f2937;
+		color: #f9fafb;
 		padding: 1rem;
 		border-radius: 0.5rem;
 		overflow-x: auto;
@@ -197,6 +194,7 @@
 
 	:global(.prose pre code) {
 		background-color: transparent;
+		color: #f9fafb;
 		padding: 0;
 	}
 

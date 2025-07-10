@@ -1,6 +1,7 @@
 <script lang="ts">
 	export let variant: 'fill' | 'outline' = 'fill';
 	export let size: 'sm' | 'md' | 'lg' = 'md';
+	export let type: 'button' | 'submit' = 'button';
 	export let onclick: () => void = () => {};
 
 	// 기본 클래스
@@ -24,7 +25,7 @@
 	$: buttonClasses = `${baseClasses} ${sizeClasses[size]} ${variantClasses[variant]}`;
 </script>
 
-<button {onclick} class={buttonClasses}>
+<button {type} {onclick} class={buttonClasses}>
 	<slot />
 </button>
 

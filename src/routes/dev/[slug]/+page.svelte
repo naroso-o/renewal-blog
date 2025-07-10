@@ -1,4 +1,3 @@
-<!-- src/routes/blog/[slug]/+page.svelte -->
 <script>
 	export let data;
 
@@ -79,9 +78,9 @@
 <div class="max-w-4xl mx-auto px-4 py-8 leading-relaxed">
 	<!-- 네비게이션 -->
 	<nav class="mb-8 text-sm text-gray-500">
-		<a href="/" class="text-blue-500 hover:underline">홈</a>
+		<a href="/" class="text-primary-500 hover:underline">홈</a>
 		<span class="mx-2 text-gray-300">›</span>
-		<a href="/blog" class="text-blue-500 hover:underline">블로그</a>
+		<a href="/dev" class="text-primary-500 hover:underline">개발 로그</a>
 		<span class="mx-2 text-gray-300">›</span>
 		<span class="text-gray-700 font-medium">{post.title}</span>
 	</nav>
@@ -103,16 +102,16 @@
 		<div class="flex flex-col gap-4 items-center">
 			<div class="flex flex-wrap gap-4 justify-center text-sm text-gray-500">
 				<time class="flex items-center">
-					📅 {formatRelativeTime(post.published_at || post.created_at)}
+					{formatRelativeTime(post.published_at || post.created_at)} 작성
 				</time>
 
 				<span class="flex items-center">
-					👁️ {post.view_count} 조회
+					| 조회수 {post.view_count}
 				</span>
 
 				{#if post.updated_at !== post.created_at}
 					<span class="flex items-center">
-						✏️ {formatRelativeTime(post.updated_at)} 수정
+						| {formatRelativeTime(post.updated_at)} 수정
 					</span>
 				{/if}
 			</div>
@@ -134,9 +133,9 @@
 	<!-- 포스트 내용 -->
 	<article class="mb-12">
 		{#if post.excerpt}
-			<div class="bg-blue-50 border-l-4 border-blue-500 p-6 mb-8 rounded-r-lg">
-				<strong class="text-blue-900">요약:</strong>
-				<span class="text-blue-800">{post.excerpt}</span>
+			<div class="bg-primary-50 border-l-4 border-primary-500 p-6 mb-8 rounded-r-lg">
+				<strong class="text-primary-900">요약:</strong>
+				<span class="text-primary-800">{post.excerpt.replace(/<[^>]*>/g, '')}</span>
 			</div>
 		{/if}
 
