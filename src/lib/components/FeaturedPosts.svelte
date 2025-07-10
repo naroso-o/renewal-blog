@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { base } from '$app/paths';
 	import type { Post } from '$lib/types';
 
 	export let posts: Post[] = [];
@@ -19,7 +20,7 @@
 					</div>
 					<h3 class="text-xl font-semibold mb-4">
 						<a
-							href="/dev/{post.slug}"
+							href="{base}/dev/{post.slug}"
 							class="text-primary-500 hover:text-primary-600 transition-colors duration-200"
 							>{post.title}</a
 						>

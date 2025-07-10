@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { base } from '$app/paths';
+
 	export let data;
 
 	$: post = data.post;
@@ -78,9 +80,9 @@
 <div class="max-w-4xl mx-auto px-4 py-8 leading-relaxed">
 	<!-- 네비게이션 -->
 	<nav class="mb-8 text-sm text-gray-500">
-		<a href="/" class="text-primary-500 hover:underline">홈</a>
+		<a href="{base}/" class="text-primary-500 hover:underline">홈</a>
 		<span class="mx-2 text-gray-300">›</span>
-		<a href="/dev" class="text-primary-500 hover:underline">개발 로그</a>
+		<a href="{base}/dev" class="text-primary-500 hover:underline">개발 로그</a>
 		<span class="mx-2 text-gray-300">›</span>
 		<span class="text-gray-700 font-medium">{post.title}</span>
 	</nav>
@@ -168,7 +170,7 @@
 		</div>
 
 		<div class="text-center">
-			<a href="/dev" class="text-gray-500 hover:text-blue-500 transition-colors duration-200">
+			<a href="{base}/dev" class="text-gray-500 hover:text-blue-500 transition-colors duration-200">
 				← 개발 로그로 돌아가기
 			</a>
 		</div>

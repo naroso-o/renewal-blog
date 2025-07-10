@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { base } from '$app/paths';
 	import Button from './Button.svelte';
 </script>
 
@@ -26,8 +27,12 @@
 		<h2 class="text-4xl md:text-6xl font-extrabold mb-4 text-primary-500">안녕하세요.</h2>
 		<p class="text-xl text-gray-700 mb-8">개발, 일상 이야기를 모은 공간입니다.</p>
 		<div class="flex flex-col items-center sm:flex-row gap-4 justify-center flex-wrap">
-			<Button onclick={() => (window.location.href = '/dev')} variant="fill">개발 로그</Button>
-			<Button onclick={() => (window.location.href = '/blog')} variant="outline">블로그</Button>
+			<Button onclick={() => (window.location.href = `${base}/dev`)} variant="fill"
+				>개발 로그</Button
+			>
+			<Button onclick={() => (window.location.href = `${base}/blog`)} variant="outline"
+				>블로그</Button
+			>
 		</div>
 	</div>
 </section>

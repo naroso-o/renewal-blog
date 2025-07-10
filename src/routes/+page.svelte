@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { base } from '$app/paths';
 	import FeaturedPosts from '$lib/components/FeaturedPosts.svelte';
 	import HeroBanner from '$lib/components/HeroBanner.svelte';
 	import type { Post } from '$lib/types';
@@ -25,7 +26,7 @@
 <section class="max-w-6xl mx-auto px-8 pb-16">
 	<div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4">
 		<h2 class="text-3xl font-bold text-gray-900">📝 최근 글</h2>
-		<a href="/dev" class="font-medium transition-colors duration-200 hover:text-primary-500"
+		<a href="{base}/dev" class="font-medium transition-colors duration-200 hover:text-primary-500"
 			>전체 보기 →</a
 		>
 	</div>
@@ -37,7 +38,7 @@
 			>
 				<h3 class="text-xl font-semibold mb-4 leading-tight">
 					<a
-						href="/dev/{post.slug}"
+						href="{base}/dev/{post.slug}"
 						class="text-gray-900 hover:text-primary-500 transition-colors duration-200"
 						>{post.title}</a
 					>

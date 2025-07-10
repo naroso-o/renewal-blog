@@ -1,3 +1,7 @@
+<script lang="ts">
+	import { base } from '$app/paths';
+</script>
+
 <div class="flex flex-col min-h-screen">
 	<header
 		class="sticky top-0 z-50 px-4 py-4 md:px-8 bg-white/95 backdrop-blur-md border-b border-gray-200"
@@ -8,17 +12,17 @@
 			<a href="/" class="text-gray-800 no-underline tracking-tight">홈</a>
 			<div class="flex gap-6 md:gap-8">
 				<a
-					href="/dev"
+					href="{base}/dev"
 					class="text-gray-600 no-underline transition-colors duration-200 tracking-normal hover:text-blue-500"
 					>개발 로그</a
 				>
 				<a
-					href="/blog"
+					href="{base}/blog"
 					class="text-gray-600 no-underline transition-colors duration-200 tracking-normal hover:text-blue-500"
 					>블로그</a
 				>
 				<a
-					href="/admin"
+					href="{base}/admin"
 					class="text-gray-600 no-underline transition-colors duration-200 tracking-normal hover:text-blue-500"
 					>관리자</a
 				>
