@@ -39,12 +39,17 @@
 				.replace(/\*\*\*(.*?)\*\*\*/g, '<strong><em>$1</em></strong>')
 				.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
 				.replace(/\*(.*?)\*/g, '<em>$1</em>')
+				// 이미지 (링크보다 먼저 처리해야 함)
+				.replace(
+					/!\[([^\]]*)\]\(([^)]+)\)/g,
+					'<img src="$2" alt="$1" class="max-w-full h-auto rounded-lg shadow-sm my-4" />'
+				)
+				// 링크
+				.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank" rel="noopener">$1</a>')
 				// 인라인 코드
 				.replace(/`([^`]+)`/g, '<code>$1</code>')
 				// 코드 블록
 				.replace(/```(\w+)?\n([\s\S]*?)```/g, '<pre><code class="language-$1">$2</code></pre>')
-				// 링크
-				.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank" rel="noopener">$1</a>')
 				// 줄바꿈
 				.replace(/\n\n/g, '</p><p>')
 				.replace(/\n/g, '<br>')
@@ -56,6 +61,8 @@
 				.replace(/<\/h([1-6])><\/p>/g, '</h$1>')
 				.replace(/<p><pre>/g, '<pre>')
 				.replace(/<\/pre><\/p>/g, '</pre>')
+				.replace(/<p><img/g, '<img')
+				.replace(/\/><\/p>/g, '/>')
 		);
 	}
 </script>
@@ -206,6 +213,10 @@
 
 	:global(.prose pre code) {
 		@apply bg-transparent text-inherit p-0 rounded-none;
+	}
+
+	:global(.prose img) {
+		@apply max-w-full h-auto rounded-lg shadow-sm my-4 mx-auto block;
 	}
 
 	:global(.prose a) {
