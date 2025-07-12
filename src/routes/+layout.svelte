@@ -9,7 +9,9 @@
 		<nav
 			class="flex flex-col md:flex-row justify-between items-center max-w-6xl mx-auto gap-4 md:gap-0"
 		>
-			<a href="/" class="text-gray-800 no-underline tracking-tight">홈</a>
+			<a href="/" class="text-gray-800 no-underline tracking-tight">
+				<img src="/logo.png" alt="logo" class="w-10 h-10" />
+			</a>
 			<div class="flex gap-6 md:gap-8">
 				<a
 					href="{base}/dev"
