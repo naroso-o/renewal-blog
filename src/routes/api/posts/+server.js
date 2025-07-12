@@ -1,6 +1,7 @@
 // src/routes/api/posts/+server.js
 import { json } from '@sveltejs/kit'
 import { postService } from '$lib/supabase.js'
+import { postErrorMessages, postErrors } from '$lib/consts/errors.js'
 
 export async function GET({ url }) {
   try {
@@ -28,9 +29,27 @@ export async function GET({ url }) {
     }))
     
     return json(formattedPosts)
-  } catch (error) {
-    console.error('API Error:', error)
-    return json({ error: 'Failed to fetch posts' }, { status: 500 })
+  } catch (err) {
+    console.error('API Error:', err);
+    
+    const errorMessage = err instanceof Error ? err.message : String(err);
+    
+    // 데이터베이스 테이블이 없는 경우
+    if (errorMessage.includes('relation') || errorMessage.includes('does not exist')) {
+      return json({ 
+        error: postErrorMessages[postErrors.DB_NOT_INITIALIZED],
+        message: postErrorMessages[postErrors.DB_NOT_INITIALIZED],
+        code: postErrors.DB_NOT_INITIALIZED
+      }, { status: 503 });
+    }
+    
+    // 기타 서버 에러
+    return json({ 
+      error: postErrorMessages[postErrors.POSTS_FETCH_ERROR],
+      message: postErrorMessages[postErrors.POSTS_FETCH_ERROR],
+      code: postErrors.POSTS_FETCH_ERROR,
+      details: errorMessage
+    }, { status: 500 });
   }
 }
 
@@ -64,11 +83,35 @@ export async function POST({ request }) {
       message: '포스트가 성공적으로 저장되었습니다.'
     })
     
-  } catch (error) {
-    console.error('POST API Error:', error)
+  } catch (err) {
+    console.error('POST API Error:', err);
+    
+    const errorMessage = err instanceof Error ? err.message : String(err);
+    
+    // 권한 관련 에러
+    if (errorMessage.includes('permission') || errorMessage.includes('unauthorized')) {
+      return json({ 
+        error: postErrorMessages[postErrors.PERMISSION_DENIED],
+        message: postErrorMessages[postErrors.PERMISSION_DENIED],
+        code: postErrors.PERMISSION_DENIED
+      }, { status: 403 });
+    }
+    
+    // 데이터베이스 연결 에러
+    if (errorMessage.includes('connection') || errorMessage.includes('connect')) {
+      return json({ 
+        error: postErrorMessages[postErrors.DB_CONNECTION_ERROR],
+        message: postErrorMessages[postErrors.DB_CONNECTION_ERROR],
+        code: postErrors.DB_CONNECTION_ERROR
+      }, { status: 503 });
+    }
+    
+    // 기타 서버 에러
     return json({ 
-      error: '포스트 저장 중 오류가 발생했습니다.',
-      details: error instanceof Error ? error.message : 'Unknown error'
-    }, { status: 500 })
+      error: postErrorMessages[postErrors.POST_CREATE_ERROR],
+      message: postErrorMessages[postErrors.POST_CREATE_ERROR],
+      code: postErrors.POST_CREATE_ERROR,
+      details: errorMessage
+    }, { status: 500 });
   }
 }
