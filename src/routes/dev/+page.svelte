@@ -15,7 +15,9 @@
 
 	<div class="space-y-8">
 		{#each data.posts as post}
-			<PostCard {post} variant="list" showViewCount={true} />
+			<div class="place-self-center">
+				<PostCard {post} variant="default" />
+			</div>
 		{/each}
 	</div>
 </div>

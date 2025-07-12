@@ -85,7 +85,7 @@ export const postService = {
 	async getPosts(limit = 10, offset = 0) {
 		const { data, error } = await supabase
 			.from('posts')
-			.select('id, title, slug, excerpt, tags, created_at, published_at, view_count, featured')
+			.select('id, title, slug, excerpt, tags, created_at, published_at, view_count, featured, thumbnail')
 			.eq('status', 'published')
 			.order('published_at', { ascending: false })
 			.range(offset, offset + limit - 1);

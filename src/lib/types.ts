@@ -10,13 +10,14 @@ export interface Post {
 	title: string;
 	slug: string;
 	excerpt: string;
-	content: string;
-	date: string;
+	content?: string;
+	date?: string;
 	view_count: number;
 	tags?: string[];
 	featured?: boolean;
+	thumbnail?: string;
 	created_at: string;
-	updated_at: string;
+	updated_at?: string;
 	published_at?: string;
 }
 
