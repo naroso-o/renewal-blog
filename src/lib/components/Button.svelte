@@ -1,5 +1,5 @@
 <script lang="ts">
-	export let variant: 'primary' | 'secondary' | 'ghost' | 'outline' = 'primary';
+	export let variant: 'primary' | 'secondary' | 'ghost' | 'outline' | 'danger' = 'primary';
 	export let size: 'sm' | 'md' | 'lg' = 'md';
 	export let type: 'button' | 'submit' | 'reset' = 'button';
 	export let disabled: boolean = false;
@@ -44,6 +44,12 @@
 		outline: [
 			'bg-transparent text-[color:var(--color-btn-secondary-text)] border-[color:var(--color-border-primary)]',
 			'hover:bg-[color:var(--color-btn-secondary-hover)] hover:border-[color:var(--color-border-focus)]'
+		].join(' '),
+
+		danger: [
+			'bg-gradient-to-br from-red-500 to-red-600 text-white border-transparent',
+			'hover:from-red-600 hover:to-red-700 hover:shadow-lg hover:shadow-red-500/30',
+			'active:from-red-700 active:to-red-800 active:translate-y-0'
 		].join(' ')
 	}[variant];
 
