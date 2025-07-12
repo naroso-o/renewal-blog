@@ -1,84 +1,46 @@
 <script lang="ts">
 	import { base } from '$app/paths';
+	import { onMount } from 'svelte';
+	import { formatRelativeTime } from '$lib/utils/date';
+	import {
+		initializeMarkdownSystem,
+		parseMarkdown,
+		highlightCodeBlocks
+	} from '$lib/utils/markdown';
+	import { generateSEOData, generatePostStatus } from '$lib/utils/meta';
+	import 'highlight.js/styles/github-dark.css';
 
 	export let data;
 
 	$: post = data.post;
+	$: seoData = generateSEOData(post);
+	$: postStatus = generatePostStatus(post);
 
-	function formatDate(dateString) {
-		return new Date(dateString).toLocaleDateString('ko-KR', {
-			year: 'numeric',
-			month: 'long',
-			day: 'numeric'
-		});
-	}
+	// 마크다운 시스템 초기화
+	onMount(() => {
+		initializeMarkdownSystem();
+	});
 
-	function formatRelativeTime(dateString) {
-		const now = new Date();
-		const date = new Date(dateString);
-		const diffInHours = Math.floor((now - date) / (1000 * 60 * 60));
-
-		if (diffInHours < 1) return '방금 전';
-		if (diffInHours < 24) return `${diffInHours}시간 전`;
-
-		const diffInDays = Math.floor(diffInHours / 24);
-		if (diffInDays < 7) return `${diffInDays}일 전`;
-
-		return formatDate(dateString);
-	}
-
-	// 간단한 마크다운 파싱 (나중에 marked.js 등으로 교체 가능)
-	function parseMarkdown(content) {
-		return (
-			content
-				// 헤딩
-				.replace(/^### (.*$)/gim, '<h3>$1</h3>')
-				.replace(/^## (.*$)/gim, '<h2>$1</h2>')
-				.replace(/^# (.*$)/gim, '<h1>$1</h1>')
-				// 볼드/이탤릭
-				.replace(/\*\*\*(.*?)\*\*\*/g, '<strong><em>$1</em></strong>')
-				.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-				.replace(/\*(.*?)\*/g, '<em>$1</em>')
-				// 이미지 (링크보다 먼저 처리해야 함)
-				.replace(
-					/!\[([^\]]*)\]\(([^)]+)\)/g,
-					'<img src="$2" alt="$1" class="max-w-full h-auto rounded-lg shadow-sm my-4" />'
-				)
-				// 링크
-				.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank" rel="noopener">$1</a>')
-				// 인라인 코드
-				.replace(/`([^`]+)`/g, '<code>$1</code>')
-				// 코드 블록
-				.replace(/```(\w+)?\n([\s\S]*?)```/g, '<pre><code class="language-$1">$2</code></pre>')
-				// 줄바꿈
-				.replace(/\n\n/g, '</p><p>')
-				.replace(/\n/g, '<br>')
-				// 문단 감싸기
-				.replace(/^(.)/gm, '<p>$1')
-				.replace(/(.)$/gm, '$1</p>')
-				// 중복 문단 태그 정리
-				.replace(/<p><h([1-6])>/g, '<h$1>')
-				.replace(/<\/h([1-6])><\/p>/g, '</h$1>')
-				.replace(/<p><pre>/g, '<pre>')
-				.replace(/<\/pre><\/p>/g, '</pre>')
-				.replace(/<p><img/g, '<img')
-				.replace(/\/><\/p>/g, '/>')
-		);
+	// 포스트 내용 변경 시 하이라이팅 적용
+	$: if (post && typeof window !== 'undefined') {
+		setTimeout(() => {
+			highlightCodeBlocks();
+		}, 50);
 	}
 </script>
 
 <svelte:head>
-	<title>{post.title} - naroso-o.blog</title>
-	<meta name="description" content={post.excerpt || post.title} />
+	<title>{seoData.title}</title>
+	<meta name="description" content={seoData.description} />
 
 	<!-- Open Graph 메타태그 -->
-	<meta property="og:title" content={post.title} />
-	<meta property="og:description" content={post.excerpt || post.title} />
-	<meta property="og:type" content="article" />
-	<meta property="article:published_time" content={post.published_at || post.created_at} />
-	<meta property="article:modified_time" content={post.updated_at} />
-	{#if post.tags}
-		{#each post.tags as tag}
+	<meta property="og:title" content={seoData.openGraph.title} />
+	<meta property="og:description" content={seoData.openGraph.description} />
+	<meta property="og:type" content={seoData.openGraph.type} />
+	<meta property="article:published_time" content={seoData.openGraph.publishedTime} />
+	<meta property="article:modified_time" content={seoData.openGraph.modifiedTime} />
+	{#if seoData.openGraph.tags.length > 0}
+		{#each seoData.openGraph.tags as tag}
 			<meta property="article:tag" content={tag} />
 		{/each}
 	{/if}
@@ -111,16 +73,16 @@
 		<div class="flex flex-col gap-4 items-center">
 			<div class="flex flex-wrap gap-4 justify-center text-sm text-gray-500">
 				<time class="flex items-center">
-					{formatRelativeTime(post.published_at || post.created_at)} 작성
+					{formatRelativeTime(postStatus.publishedDate)} 작성
 				</time>
 
 				<span class="flex items-center">
 					| 조회수 {post.view_count}
 				</span>
 
-				{#if post.updated_at !== post.created_at}
+				{#if postStatus.isUpdated}
 					<span class="flex items-center">
-						| {formatRelativeTime(post.updated_at)} 수정
+						| {formatRelativeTime(postStatus.updatedDate)} 수정
 					</span>
 				{/if}
 			</div>
@@ -203,16 +165,24 @@
 		@apply mb-6 text-gray-700;
 	}
 
-	:global(.prose code) {
+	/* 인라인 코드 스타일 */
+	:global(.prose code:not(pre code)) {
 		@apply bg-gray-100 text-red-600 px-1 py-0.5 rounded text-sm font-mono;
 	}
 
+	/* 코드 블록 스타일 */
 	:global(.prose pre) {
-		@apply bg-gray-900 text-gray-100 p-6 rounded-lg overflow-x-auto my-6 text-sm leading-relaxed;
+		@apply rounded-lg overflow-x-auto my-6 text-sm leading-relaxed;
 	}
 
+	/* highlight.js 스타일과 호환 */
 	:global(.prose pre code) {
-		@apply bg-transparent text-inherit p-0 rounded-none;
+		@apply block p-6 font-mono;
+	}
+
+	/* highlight.js 테마 커스터마이징 */
+	:global(.hljs) {
+		@apply rounded-lg;
 	}
 
 	:global(.prose img) {

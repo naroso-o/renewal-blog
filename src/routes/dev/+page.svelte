@@ -1,30 +1,9 @@
 <script lang="ts">
 	import { base } from '$app/paths';
 	import PageHeader from '../../lib/components/PageHeader.svelte';
+	import { formatRelativeTime } from '../../lib/utils/date';
 
 	export let data;
-
-	function formatDate(dateString: string) {
-		return new Date(dateString).toLocaleDateString('ko-KR', {
-			year: 'numeric',
-			month: 'long',
-			day: 'numeric'
-		});
-	}
-
-	function formatRelativeTime(dateString: string) {
-		const now = new Date();
-		const date = new Date(dateString);
-		const diffInHours = Math.floor((now.getTime() - date.getTime()) / (1000 * 60 * 60));
-
-		if (diffInHours < 1) return '방금 전';
-		if (diffInHours < 24) return `${diffInHours}시간 전`;
-
-		const diffInDays = Math.floor(diffInHours / 24);
-		if (diffInDays < 7) return `${diffInDays}일 전`;
-
-		return formatDate(dateString);
-	}
 </script>
 
 <svelte:head>
