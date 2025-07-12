@@ -4,7 +4,7 @@
 </script>
 
 <section
-	class="relative text-center py-24 px-8 bg-gradient-to-br from-secondary-50 via-primary-50 to-primary-100 text-gray-800 -mx-8 mb-12 overflow-hidden"
+	class="relative text-center py-24 px-8 bg-background-gradient text-primary -mx-8 mb-12 overflow-hidden"
 >
 	<!-- 움직이는 빗방울 배경 애니메이션 -->
 	<div class="absolute inset-0 overflow-hidden">
@@ -24,15 +24,11 @@
 	</div>
 
 	<div class="relative z-10">
-		<h2 class="text-4xl md:text-6xl font-extrabold mb-4 text-primary-500">안녕하세요.</h2>
-		<p class="text-xl text-gray-700 mb-8">개발, 일상 이야기를 모은 공간입니다.</p>
+		<h2 class="text-4xl md:text-6xl font-extrabold mb-4 text-brand-primary">안녕하세요.</h2>
+		<p class="text-xl text-inverse mb-8">개발, 일상 이야기를 모은 공간입니다.</p>
 		<div class="flex flex-col items-center sm:flex-row gap-4 justify-center flex-wrap">
-			<Button onclick={() => (window.location.href = `${base}/dev`)} variant="fill"
-				>개발 로그</Button
-			>
-			<Button onclick={() => (window.location.href = `${base}/blog`)} variant="outline"
-				>블로그</Button
-			>
+			<Button href={`${base}/dev`} variant="primary" size="lg">개발 로그</Button>
+			<Button href={`${base}/blog`} variant="secondary" size="lg">블로그</Button>
 		</div>
 	</div>
 </section>
@@ -44,9 +40,10 @@
 		position: absolute;
 		width: 2px;
 		height: 20px;
-		background: linear-gradient(to bottom, var(--color-primary-300), var(--color-primary-200));
+		background: linear-gradient(to bottom, #f25287, #e02257);
 		border-radius: 0 0 50% 50%;
 		animation: raindrop-fall 3s linear infinite;
+		opacity: 0.6;
 	}
 
 	.raindrop-1 {

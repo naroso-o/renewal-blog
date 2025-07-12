@@ -66,13 +66,13 @@
 	// }
 </script>
 
-<div class="min-h-screen flex justify-center bg-gray-50 py-24 px-4 sm:px-6 lg:px-8">
+<div class="min-h-screen flex justify-center bg-background py-24 px-4 sm:px-6 lg:px-8">
 	<div class="max-w-md w-full space-y-8">
 		<div>
-			<h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">관리자 로그인</h2>
-			<p class="mt-2 text-center text-sm text-gray-600">블로그 포스트를 작성하려면 로그인하세요</p>
+			<h2 class="mt-6 text-center text-3xl font-extrabold text-primary">관리자 로그인</h2>
+			<p class="mt-2 text-center text-sm text-secondary">블로그 포스트를 작성하려면 로그인하세요</p>
 		</div>
-		<form class="mt-8 space-y-6" on:submit|preventDefault={handleSignIn}>
+		<form class="mt-8 space-y-6" onsubmit={handleSignIn}>
 			<div class="rounded-md shadow-sm -space-y-px">
 				<Input
 					id="email"

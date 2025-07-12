@@ -115,9 +115,9 @@
 		</div>
 
 		<!-- 마크다운 도움말 -->
-		<div class="bg-gray-50 p-4 rounded-lg">
-			<h3 class="text-sm font-medium text-gray-700 mb-2">마크다운 문법 도움말</h3>
-			<div class="text-xs text-gray-600 space-y-1">
+		<div class="bg-background-gradient p-4 rounded-lg">
+			<h3 class="text-sm font-medium text-secondary mb-2">마크다운 문법 도움말</h3>
+			<div class="text-xs text-secondary space-y-1">
 				<p><strong>제목:</strong> # 제목1, ## 제목2, ### 제목3</p>
 				<p><strong>굵게:</strong> **굵은 텍스트**</p>
 				<p><strong>기울임:</strong> *기울임 텍스트*</p>

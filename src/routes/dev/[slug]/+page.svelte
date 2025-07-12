@@ -9,6 +9,7 @@
 	} from '$lib/utils/markdown';
 	import { generateSEOData, generatePostStatus } from '$lib/utils/meta';
 	import 'highlight.js/styles/github-dark.css';
+	import { Button } from '../../../lib';
 
 	export let data;
 
@@ -48,30 +49,30 @@
 
 <div class="max-w-4xl mx-auto px-4 py-8 leading-relaxed">
 	<!-- 네비게이션 -->
-	<nav class="mb-8 text-sm text-gray-500">
-		<a href="{base}/" class="text-primary-500 hover:underline">홈</a>
-		<span class="mx-2 text-gray-300">›</span>
-		<a href="{base}/dev" class="text-primary-500 hover:underline">개발 로그</a>
-		<span class="mx-2 text-gray-300">›</span>
-		<span class="text-gray-700 font-medium">{post.title}</span>
+	<nav class="mb-8 text-sm">
+		<a href="{base}/" class="text-brand-primary hover:underline">홈</a>
+		<span class="mx-2 text-secondary">›</span>
+		<a href="{base}/dev" class="text-brand-primary hover:underline">개발 로그</a>
+		<span class="mx-2 text-secondary">›</span>
+		<span class="text-primary font-medium">{post.title}</span>
 	</nav>
 
 	<!-- 포스트 헤더 -->
 	<header class="mb-12 text-center">
 		{#if post.featured}
 			<div
-				class="inline-block bg-gradient-to-r from-yellow-100 to-yellow-200 text-yellow-700 px-4 py-2 rounded-full text-sm font-semibold mb-4 shadow-sm"
+				class="inline-block bg-background-gradient px-4 py-2 rounded-full text-sm mb-4 shadow-sm text-inverse font-medium"
 			>
 				⭐ 추천 포스트
 			</div>
 		{/if}
 
-		<h1 class="text-3xl md:text-5xl font-extrabold text-gray-900 leading-tight mb-6">
+		<h1 class="text-3xl md:text-5xl font-extrabold text-primary leading-tight py-3 sm:py-6 md:py-8">
 			{post.title}
 		</h1>
 
 		<div class="flex flex-col gap-4 items-center">
-			<div class="flex flex-wrap gap-4 justify-center text-sm text-gray-500">
+			<div class="flex flex-wrap gap-4 justify-center text-sm text-tertiary">
 				<time class="flex items-center">
 					{formatRelativeTime(postStatus.publishedDate)} 작성
 				</time>
@@ -92,7 +93,7 @@
 					{#each post.tags as tag}
 						<a
 							href="/blog/tag/{tag}"
-							class="bg-gray-100 text-gray-700 px-3 py-1 rounded-full text-sm hover:bg-gray-200 transition-colors duration-200"
+							class="text-brand-primary px-3 py-1 rounded-full text-sm transition-colors duration-200"
 							>#{tag}</a
 						>
 					{/each}
@@ -104,9 +105,9 @@
 	<!-- 포스트 내용 -->
 	<article class="mb-12">
 		{#if post.excerpt}
-			<div class="bg-primary-50 border-l-4 border-primary-500 p-6 mb-8 rounded-r-lg">
-				<strong class="text-primary-900">요약:</strong>
-				<span class="text-primary-800">{post.excerpt.replace(/<[^>]*>/g, '')}</span>
+			<div class="bg-background border-l-4 border-primary p-6 mb-8 rounded-r-lg">
+				<strong class="text-primary">요약:</strong>
+				<span class="text-primary">{post.excerpt.replace(/<[^>]*>/g, '')}</span>
 			</div>
 		{/if}
 
@@ -116,30 +117,20 @@
 	</article>
 
 	<!-- 포스트 푸터 -->
-	<footer class="border-t border-gray-200 pt-8">
+	<footer class="border-t border-primary pt-8">
 		<div class="text-center mb-8">
-			<p class="text-lg text-gray-700 mb-4">이 글이 도움이 되었나요?</p>
+			<p class="text-lg text-secondary mb-4">이 글이 도움이 되었나요?</p>
 			<div class="flex gap-4 justify-center flex-wrap">
-				<button
-					class="px-6 py-3 bg-gray-100 border border-gray-300 text-gray-700 rounded-lg text-sm hover:bg-green-50 hover:border-green-300 hover:text-green-700 transition-all duration-200"
-				>
-					👍 도움됨
-				</button>
-				<button
-					class="px-6 py-3 bg-gray-100 border border-gray-300 text-gray-700 rounded-lg text-sm hover:bg-blue-50 hover:border-blue-300 hover:text-blue-700 transition-all duration-200"
-				>
-					🔗 공유하기
-				</button>
-				<button
-					class="px-6 py-3 bg-gray-100 border border-gray-300 text-gray-700 rounded-lg text-sm hover:bg-yellow-50 hover:border-yellow-300 hover:text-yellow-700 transition-all duration-200"
-				>
-					💬 댓글 남기기
-				</button>
+				<Button onclick={() => {}} variant="secondary" size="md">❤️ 좋아요</Button>
+				<Button onclick={() => {}} variant="secondary" size="md">🔗 공유하기</Button>
 			</div>
 		</div>
 
 		<div class="text-center">
-			<a href="{base}/dev" class="text-gray-500 hover:text-blue-500 transition-colors duration-200">
+			<a
+				href="{base}/dev"
+				class="text-brand-primary hover:underline transition-colors duration-200"
+			>
 				← 개발 로그로 돌아가기
 			</a>
 		</div>
@@ -148,63 +139,200 @@
 
 <style>
 	@import '../../../app.css';
-	/* 마크다운 스타일링 */
+
+	/* 마크다운 스타일링 - 다크모드 대응 */
 	:global(.prose h1) {
-		@apply text-4xl font-bold text-gray-900 mt-8 mb-4 leading-tight;
+		font-size: 2.25rem;
+		font-weight: 700;
+		color: var(--color-text-primary);
+		margin-top: 2rem;
+		margin-bottom: 1rem;
+		line-height: 1.25;
 	}
 
 	:global(.prose h2) {
-		@apply text-3xl font-semibold text-gray-900 mt-8 mb-4 leading-tight border-b-2 border-gray-200 pb-2;
+		font-size: 1.875rem;
+		font-weight: 600;
+		color: var(--color-text-primary);
+		margin-top: 2rem;
+		margin-bottom: 1rem;
+		line-height: 1.25;
+		border-bottom: 2px solid var(--color-border-primary);
+		padding-bottom: 0.5rem;
 	}
 
 	:global(.prose h3) {
-		@apply text-2xl font-semibold text-gray-800 mt-6 mb-3;
+		font-size: 1.5rem;
+		font-weight: 600;
+		color: var(--color-text-primary);
+		margin-top: 1.5rem;
+		margin-bottom: 0.75rem;
 	}
 
 	:global(.prose p) {
-		@apply mb-6 text-gray-700;
+		margin-bottom: 1.5rem;
+		color: var(--color-text-secondary);
+		line-height: 1.6;
 	}
 
-	/* 인라인 코드 스타일 */
+	/* 인라인 코드 스타일 - 다크모드 대응 */
 	:global(.prose code:not(pre code)) {
-		@apply bg-gray-100 text-red-600 px-1 py-0.5 rounded text-sm font-mono;
+		background-color: var(--color-bg-tertiary);
+		color: var(--color-error);
+		padding: 0.125rem 0.25rem;
+		border-radius: 0.25rem;
+		font-size: 0.875rem;
+		font-family: var(--font-mono);
+		border: 1px solid var(--color-border-primary);
 	}
 
 	/* 코드 블록 스타일 */
 	:global(.prose pre) {
-		@apply rounded-lg overflow-x-auto my-6 text-sm leading-relaxed;
+		border-radius: 0.5rem;
+		overflow-x: auto;
+		margin: 1.5rem 0;
+		font-size: 0.875rem;
+		line-height: 1.5;
+		background-color: var(--color-bg-tertiary);
+		border: 1px solid var(--color-border-primary);
 	}
 
 	/* highlight.js 스타일과 호환 */
 	:global(.prose pre code) {
-		@apply block p-6 font-mono;
+		display: block;
+		padding: 1.5rem;
+		font-family: var(--font-mono);
+		background-color: transparent;
+		color: var(--color-text-primary);
 	}
 
 	/* highlight.js 테마 커스터마이징 */
 	:global(.hljs) {
-		@apply rounded-lg;
+		border-radius: 0.5rem;
+		background-color: var(--color-bg-tertiary) !important;
 	}
 
+	/* 이미지 스타일 */
 	:global(.prose img) {
-		@apply max-w-full h-auto rounded-lg shadow-sm my-4 mx-auto block;
+		max-width: 100%;
+		height: auto;
+		border-radius: 0.5rem;
+		box-shadow: 0 1px 3px var(--color-card-shadow);
+		margin: 1rem auto;
+		display: block;
 	}
 
+	/* 링크 스타일 */
 	:global(.prose a) {
-		@apply text-blue-500 no-underline border-b border-transparent hover:border-blue-500 transition-colors duration-200;
+		color: var(--color-brand-primary);
+		text-decoration: none;
+		border-bottom: 1px solid transparent;
+		transition: all 0.2s ease;
 	}
 
+	:global(.prose a:hover) {
+		border-bottom-color: var(--color-brand-primary);
+	}
+
+	/* 강조 텍스트 */
 	:global(.prose strong) {
-		@apply font-semibold text-gray-900;
+		font-weight: 600;
+		color: var(--color-text-primary);
 	}
 
 	:global(.prose em) {
-		@apply italic text-gray-600;
+		font-style: italic;
+		color: var(--color-text-tertiary);
+	}
+
+	/* 목록 스타일 */
+	:global(.prose ul) {
+		list-style-type: disc;
+		padding-left: 1.5rem;
+		margin-bottom: 1.5rem;
+		color: var(--color-text-secondary);
+	}
+
+	:global(.prose ol) {
+		list-style-type: decimal;
+		padding-left: 1.5rem;
+		margin-bottom: 1.5rem;
+		color: var(--color-text-secondary);
+	}
+
+	:global(.prose li) {
+		margin-bottom: 0.5rem;
+		line-height: 1.6;
+	}
+
+	/* 인용 블록 */
+	:global(.prose blockquote) {
+		border-left: 4px solid var(--color-brand-primary);
+		padding-left: 1rem;
+		margin: 1.5rem 0;
+		color: var(--color-text-tertiary);
+		font-style: italic;
+		background-color: var(--color-bg-secondary);
+		border-radius: 0 0.25rem 0.25rem 0;
+		padding: 1rem;
+	}
+
+	/* 표 스타일 */
+	:global(.prose table) {
+		width: 100%;
+		border-collapse: collapse;
+		margin: 1.5rem 0;
+		border: 1px solid var(--color-border-primary);
+		border-radius: 0.5rem;
+		overflow: hidden;
+	}
+
+	:global(.prose th) {
+		background-color: var(--color-bg-secondary);
+		color: var(--color-text-primary);
+		padding: 0.75rem;
+		text-align: left;
+		font-weight: 600;
+		border-bottom: 2px solid var(--color-border-primary);
+	}
+
+	:global(.prose td) {
+		padding: 0.75rem;
+		color: var(--color-text-secondary);
+		border-bottom: 1px solid var(--color-border-secondary);
+	}
+
+	:global(.prose tr:hover td) {
+		background-color: var(--color-bg-secondary);
+	}
+
+	/* 구분선 */
+	:global(.prose hr) {
+		border: none;
+		border-top: 2px solid var(--color-border-primary);
+		margin: 2rem 0;
 	}
 
 	/* 반응형 디자인 */
 	@media (max-width: 768px) {
+		:global(.prose h1) {
+			font-size: 1.875rem;
+		}
+
+		:global(.prose h2) {
+			font-size: 1.5rem;
+		}
+
+		:global(.prose h3) {
+			font-size: 1.25rem;
+		}
+
 		:global(.prose pre) {
-			@apply p-4 text-xs;
+			font-size: 0.75rem;
+		}
+
+		:global(.prose pre code) {
+			padding: 1rem;
 		}
 	}
 </style>

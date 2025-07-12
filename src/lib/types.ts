@@ -17,6 +17,7 @@ export interface Post {
 	featured?: boolean;
 	created_at: string;
 	updated_at: string;
+	published_at?: string;
 }
 
 // 타입 가드 함수

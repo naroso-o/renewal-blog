@@ -25,7 +25,7 @@
 		bind:value
 		{type}
 		{required}
-		class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-primary-500 focus:border-primary-500 focus:z-10 sm:text-sm"
+		class="appearance-none rounded-none relative block w-full px-3 py-2 border bg-background border-primary placeholder-secondary text-primary rounded-t-md focus:outline-none focus:ring-primary focus:border-primary focus:z-10 sm:text-sm"
 		{placeholder}
 		on:input={handleInput}
 	/>

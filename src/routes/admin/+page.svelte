@@ -45,7 +45,7 @@
 		<div class="text-lg">로딩 중...</div>
 	</div>
 {:else if isSignedIn && isAdmin}
-	<div class="min-h-screen bg-gray-50">
+	<div class="min-h-screen bg-background">
 		<header class="flex justify-end p-4">
 			<Button size="sm" onclick={handleSignOut}>로그아웃</Button>
 		</header>
