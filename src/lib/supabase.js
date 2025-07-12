@@ -167,3 +167,130 @@ export const postService = {
 		return [...new Set(allTags)].sort();
 	}
 };
+
+// 댓글 관련 함수들
+export const commentService = {
+	// 댓글 목록 가져오기
+	async getComments(postId) {
+		const { data, error } = await supabase
+			.from('comments')
+			.select('*')
+			.eq('post_id', postId)
+			.order('created_at', { ascending: true });
+
+		if (error) throw error;
+		return data;
+	},
+
+	// 익명 댓글 생성
+	async createAnonymousComment(postId, content, authorName, passwordHash) {
+		const { data, error } = await supabase
+			.from('comments')
+			.insert({
+				post_id: postId,
+				content,
+				author_name: authorName,
+				author_type: 'anonymous',
+				password_hash: passwordHash,
+				created_at: new Date().toISOString()
+			})
+			.select()
+			.single();
+
+		if (error) throw error;
+		return data;
+	},
+
+	// GitHub 댓글 생성
+	async createGithubComment(postId, content, githubUser) {
+		console.log('GitHub 댓글 생성 시도:', githubUser);
+		
+		// GitHub 사용자 ID 안전하게 추출
+		const githubUserId = githubUser.id || githubUser.sub || githubUser.user_id;
+		if (!githubUserId) {
+			throw new Error('GitHub 사용자 ID를 찾을 수 없습니다.');
+		}
+
+		const { data, error } = await supabase
+			.from('comments')
+			.insert({
+				post_id: postId,
+				content,
+				author_name: githubUser.name || githubUser.login || githubUser.user_name || '익명',
+				author_type: 'github',
+				github_user_id: githubUserId.toString(),
+				github_username: githubUser.login || githubUser.user_name || githubUser.preferred_username,
+				github_avatar_url: githubUser.avatar_url || githubUser.picture,
+				created_at: new Date().toISOString()
+			})
+			.select()
+			.single();
+
+		if (error) throw error;
+		return data;
+	},
+
+	// 댓글 수정
+	async updateComment(commentId, content) {
+		const { data, error } = await supabase
+			.from('comments')
+			.update({
+				content,
+				updated_at: new Date().toISOString(),
+				is_edited: true
+			})
+			.eq('id', commentId)
+			.select()
+			.single();
+
+		if (error) throw error;
+		return data;
+	},
+
+	// 댓글 삭제
+	async deleteComment(commentId) {
+		const { error } = await supabase
+			.from('comments')
+			.delete()
+			.eq('id', commentId);
+
+		if (error) throw error;
+	},
+
+	// 익명 댓글 권한 확인
+	async verifyAnonymousComment(commentId, passwordHash) {
+		const { data, error } = await supabase
+			.from('comments')
+			.select('password_hash')
+			.eq('id', commentId)
+			.eq('author_type', 'anonymous')
+			.single();
+
+		if (error) throw error;
+		return data && data.password_hash === passwordHash;
+	},
+
+	// GitHub 댓글 권한 확인
+	async verifyGithubComment(commentId, githubUserId) {
+		const { data, error } = await supabase
+			.from('comments')
+			.select('github_user_id')
+			.eq('id', commentId)
+			.eq('author_type', 'github')
+			.single();
+
+		if (error) throw error;
+		return data && data.github_user_id === githubUserId.toString();
+	},
+
+	// 댓글 개수 가져오기
+	async getCommentCount(postId) {
+		const { count, error } = await supabase
+			.from('comments')
+			.select('*', { count: 'exact', head: true })
+			.eq('post_id', postId);
+
+		if (error) throw error;
+		return count || 0;
+	}
+};

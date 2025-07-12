@@ -21,6 +21,33 @@ export interface Post {
 	published_at?: string;
 }
 
+// 댓글 관련 타입 정의
+export interface Comment {
+	id: string;
+	post_id: string;
+	content: string;
+	author_name: string;
+	author_type: 'anonymous' | 'github';
+	github_user_id?: string;
+	github_username?: string;
+	github_avatar_url?: string;
+	password_hash?: string; // 익명 댓글의 비밀번호 해시
+	created_at: string;
+	updated_at?: string;
+	is_edited?: boolean;
+}
+
+export interface CommentInput {
+	content: string;
+	author_name: string;
+	password?: string; // 익명 댓글용 비밀번호
+}
+
+export interface CommentActionRequest {
+	comment_id: string;
+	password?: string; // 익명 댓글 수정/삭제 시 필요
+}
+
 // 타입 가드 함수
 export function isSupabaseError(error: unknown): error is SupabaseError {
 	return typeof error === 'object' && error !== null && 'code' in error;
