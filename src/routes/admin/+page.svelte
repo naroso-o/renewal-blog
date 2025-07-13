@@ -1,9 +1,9 @@
 <script lang="ts">
-	import Signin from '$lib/components/Signin.svelte';
-	import BlogEditor from '$lib/components/BlogEditor.svelte';
+	import Signin from '$lib/components/auth/Signin.svelte';
+	import BlogEditor from '$lib/components/auth/BlogEditor.svelte';
+	import Button from '$lib/components/entity/Button.svelte';
 	import { supabase, adminService } from '$lib/supabase.js';
 	import { onMount } from 'svelte';
-	import Button from '$lib/components/Button.svelte';
 
 	let isSignedIn = false;
 	let isAdmin = false;

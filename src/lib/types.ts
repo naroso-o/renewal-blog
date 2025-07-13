@@ -21,6 +21,22 @@ export interface Post {
 	published_at?: string;
 }
 
+export interface Piece {
+	id: string;
+	title: string;
+	slug: string;
+	excerpt?: string;
+	content?: string;
+	date?: string;
+	view_count: number;
+	tags?: string[];
+	featured?: boolean;
+	thumbnail?: string;
+	created_at: string;
+	updated_at?: string;
+	published_at?: string;
+}
+
 // 댓글 관련 타입 정의
 export interface Comment {
 	id: string;

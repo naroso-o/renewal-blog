@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { page } from '$app/state';
-	import { Button } from '../lib';
+	import Button from '../lib/components/entity/Button.svelte';
 	import { onMount } from 'svelte';
 
 	// 에러 타입별 메시지와 액션 정의

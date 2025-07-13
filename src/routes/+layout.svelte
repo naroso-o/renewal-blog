@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { base } from '$app/paths';
-	import ThemeToggle from '../lib/components/ThemeToggle.svelte';
-	import AdminLink from '../lib/components/AdminLink.svelte';
+	import ThemeToggle from '../lib/components/header/ThemeToggle.svelte';
+	import AdminLink from '../lib/components/header/AdminLink.svelte';
 
 	let isDrawerOpen = false;
 

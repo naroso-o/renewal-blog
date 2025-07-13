@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { base } from '$app/paths';
-	import Button from './Button.svelte';
 	import Comments from './Comments.svelte';
+	import Button from '../entity/Button.svelte';
 
 	export let postId: string;
 </script>

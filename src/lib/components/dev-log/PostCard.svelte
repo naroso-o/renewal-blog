@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { base } from '$app/paths';
-	import { formatDate } from '../utils/date';
-	import type { Post } from '../types';
+	import { formatDate } from '../../utils/date';
+	import type { Post } from '../../types';
 
 	export let post: Post;
 	export let variant: 'gradient' | 'default' = 'default';

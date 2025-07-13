@@ -7,7 +7,3 @@
 	<h2 class="text-4xl font-bold text-gray-900 mb-2">{title}</h2>
 	<p class="text-lg text-gray-600">{description}</p>
 </header>
-
-<style>
-	@import '../../app.css';
-</style>

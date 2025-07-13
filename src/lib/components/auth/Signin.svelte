@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { supabase } from '$lib/supabase.js';
-	import Button from './Button.svelte';
-	import Input from './Input.svelte';
+	import Button from '../entity/Button.svelte';
+	import Input from '../entity/Input.svelte';
 
 	let email = '';
 	let password = '';

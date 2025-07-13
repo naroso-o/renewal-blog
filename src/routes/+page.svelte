@@ -1,9 +1,10 @@
 <script lang="ts">
 	import { base } from '$app/paths';
-	import HeroBanner from '$lib/components/HeroBanner.svelte';
-	import PostCard from '$lib/components/PostCard.svelte';
+	import HeroBanner from '$lib/components/home/HeroBanner.svelte';
+	import PostCard from '$lib/components/dev-log/PostCard.svelte';
 	import type { Post } from '$lib/types';
-	import HeroSection from '../lib/components/HeroSection.svelte';
+	import HeroSection from '../lib/components/home/HeroSection.svelte';
+	import NoPostMessage from '../lib/components/common/NoPostMessage.svelte';
 
 	// 서버에서 받은 데이터
 	export let data: {
@@ -41,13 +42,10 @@
 					<PostCard {post} href={`${base}/dev/${post.slug}`} />
 				</div>
 			{/each}
-			{#if recentPosts.length === 0}
-				<div class="text-center py-12 text-tertiary">
-					<p>아직 작성된 글이 없습니다.</p>
-					<p>첫 번째 글을 작성해보세요! ✍️</p>
-				</div>
-			{/if}
 		</div>
+		{#if recentPosts.length === 0}
+			<NoPostMessage />
+		{/if}
 	</HeroSection>
 {/if}
 

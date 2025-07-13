@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { base } from '$app/paths';
-	import Button from './Button.svelte';
+	import Button from '../entity/Button.svelte';
 </script>
 
 <section
@@ -34,7 +34,6 @@
 </section>
 
 <style>
-	@import '../../app.css';
 	/* 빗방울 애니메이션 */
 	.raindrop {
 		position: absolute;

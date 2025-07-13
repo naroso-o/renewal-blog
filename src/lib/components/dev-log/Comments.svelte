@@ -1,11 +1,11 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { supabase, commentService } from '../supabase.js';
-	import { hashPassword } from '../utils/crypto.js';
-	import { formatDistanceToNow } from '../utils/date.js';
-	import type { Comment, CommentInput } from '../types.js';
-	import Button from './Button.svelte';
-	import Input from './Input.svelte';
+	import { supabase, commentService } from '../../supabase.js';
+	import { hashPassword } from '../../utils/crypto.js';
+	import { formatDistanceToNow } from '../../utils/date.js';
+	import type { Comment, CommentInput } from '../../types.js';
+	import Button from '../entity/Button.svelte';
+	import Input from '../entity/Input.svelte';
 
 	export let postId: string;
 

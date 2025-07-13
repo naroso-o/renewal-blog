@@ -1,10 +1,16 @@
 <script lang="ts">
 	import { marked } from 'marked';
 	import { supabase } from '$lib/supabase.js';
-	import { browser } from '$app/environment';
-	import Button from './Button.svelte';
+	import Button from '../entity/Button.svelte';
+	import Input from '../entity/Input.svelte';
+	import Select from '../entity/Select.svelte';
+	import { POST_STATUS_OPTIONS, POST_STATUS } from '$lib/consts/post';
 
 	let title = '';
+	let excerpt = '';
+	let tags = '';
+	let status = POST_STATUS.DRAFT;
+	let featured = false;
 	let content = '';
 	let isSaving = false;
 	let saveMessage = '';
@@ -30,6 +36,12 @@
 				.replace(/\s+/g, '-')
 				.trim();
 
+			// 태그 문자열을 배열로 변환
+			const tagArray = tags
+				.split(',')
+				.map((tag) => tag.trim())
+				.filter((tag) => tag.length > 0);
+
 			// Supabase에 직접 저장
 			const { data, error } = await supabase
 				.from('posts')
@@ -37,12 +49,12 @@
 					title: title.trim(),
 					content: content.trim(),
 					slug: slug,
-					excerpt: content.trim().substring(0, 150) + '...',
-					tags: [],
-					status: 'published',
+					excerpt: excerpt,
+					tags: tagArray,
+					status: status,
 					published_at: new Date().toISOString(),
 					view_count: 0,
-					featured: false
+					featured: featured
 				})
 				.select()
 				.single();
@@ -55,6 +67,10 @@
 				// 저장 후 폼 초기화
 				title = '';
 				content = '';
+				excerpt = '';
+				tags = '';
+				status = POST_STATUS.DRAFT;
+				featured = false;
 			}
 		} catch (error) {
 			console.error('Error saving post:', error);
@@ -74,17 +90,14 @@
 
 	<div class="space-y-6">
 		<!-- 제목 입력 -->
-		<div>
-			<label for="title" class="block text-sm font-medium text-gray-700 mb-2"> 제목 </label>
-			<input
-				id="title"
-				type="text"
-				bind:value={title}
-				placeholder="포스트 제목을 입력하세요"
-				class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-			/>
-		</div>
-
+		<Input bind:value={title} placeholder="포스트 제목을 입력하세요" />
+		<Input bind:value={excerpt} placeholder="포스트 요약을 입력하세요" />
+		<Input bind:value={tags} placeholder="포스트 태그를 입력하세요 (쉼표로 구분)" />
+		<Select
+			bind:value={status}
+			placeholder="포스트 상태를 선택하세요"
+			options={POST_STATUS_OPTIONS}
+		/>
 		<!-- 에디터 컨트롤 -->
 		<div class="flex items-center justify-between">
 			<label for="content" class="block text-sm font-medium text-gray-700"> 내용 </label>

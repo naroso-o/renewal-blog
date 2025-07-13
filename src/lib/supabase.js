@@ -5,9 +5,10 @@ const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
 const supabaseKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
 
 // 빌드 시점 오류 방지를 위한 더미 클라이언트
-export const supabase = supabaseUrl && supabaseKey 
-  ? createClient(supabaseUrl, supabaseKey)
-  : createClient('https://dummy.supabase.co', 'dummy-key');
+export const supabase =
+	supabaseUrl && supabaseKey
+		? createClient(supabaseUrl, supabaseKey)
+		: createClient('https://dummy.supabase.co', 'dummy-key');
 
 // 관리자 관련 함수들
 export const adminService = {
@@ -44,10 +45,10 @@ export const adminService = {
 			.eq('is_active', true)
 			.single();
 
-		console.log("super admin", data);
+		console.log('super admin', data);
 		if (error || !data) return false;
 		return true;
-	},
+	}
 };
 
 // 포스트 관련 함수들
@@ -85,7 +86,9 @@ export const postService = {
 	async getPosts(limit = 10, offset = 0) {
 		const { data, error } = await supabase
 			.from('posts')
-			.select('id, title, slug, excerpt, tags, created_at, published_at, view_count, featured, thumbnail')
+			.select(
+				'id, title, slug, excerpt, tags, created_at, published_at, view_count, featured, thumbnail'
+			)
 			.eq('status', 'published')
 			.order('published_at', { ascending: false })
 			.range(offset, offset + limit - 1);
@@ -168,6 +171,87 @@ export const postService = {
 	}
 };
 
+export const pieceService = {
+	// 일상 블로그 글 목록 가져오기
+	async getPieces(limit = 10, offset = 0) {
+		const { data, error } = await supabase
+			.from('pieces')
+			.select(
+				'id, title, slug, tags, created_at, published_at, view_count, featured, thumbnail'
+			)
+			.eq('status', 'published')
+			.order('published_at', { ascending: false })
+			.range(offset, offset + limit - 1);
+
+		if (error) throw error;
+		return data;
+	},
+
+	// 새 일상 블로그 글 생성
+	async createPiece(pieceData) {
+		// slug 생성 (제목을 기반으로)
+		const slug = pieceData.title
+			.toLowerCase()
+			.replace(/[^a-z0-9가-힣\s]/g, '')
+			.replace(/\s+/g, '-')
+			.trim();
+
+		const { data, error } = await supabase
+			.from('pieces')
+			.insert({
+				title: pieceData.title,
+				content: pieceData.content,
+				slug: slug,
+				excerpt: pieceData.excerpt || pieceData.content.substring(0, 150) + '...',
+				tags: pieceData.tags || [],
+				status: 'published',
+				published_at: pieceData.published_at || new Date().toISOString(),
+				view_count: 0,
+				featured: pieceData.featured || false,
+				thumbnail: pieceData.thumbnail
+			})
+			.select()
+			.single();
+
+		if (error) throw error;
+		return data;
+	},
+
+	// 특정 일상 블로그 글 상세 정보 가져오기
+	async getPieceBySlug(slug) {
+		const { data, error } = await supabase
+			.from('pieces')
+			.select('*')
+			.eq('slug', slug)
+			.eq('status', 'published')
+			.single();
+
+		if (error) throw error;
+
+		// 조회수 증가
+		await supabase
+			.from('pieces')
+			.update({ view_count: data.view_count + 1 })
+			.eq('id', data.id);
+
+		return { ...data, view_count: data.view_count + 1 };
+	},
+
+	// 추천 일상 블로그 글 가져오기
+	async getFeaturedPieces(limit = 3) {
+		const { data, error } = await supabase
+			.from('pieces')
+			.select('id, title, slug, tags, created_at, published_at, thumbnail')
+			.eq('status', 'published')
+			.eq('featured', true)
+			.order('published_at', { ascending: false })
+			.limit(limit);
+
+		if (error) throw error;
+		return data;
+	}
+};
+
 // 댓글 관련 함수들
 export const commentService = {
 	// 댓글 목록 가져오기
@@ -204,7 +288,7 @@ export const commentService = {
 	// GitHub 댓글 생성
 	async createGithubComment(postId, content, githubUser) {
 		console.log('GitHub 댓글 생성 시도:', githubUser);
-		
+
 		// GitHub 사용자 ID 안전하게 추출
 		const githubUserId = githubUser.id || githubUser.sub || githubUser.user_id;
 		if (!githubUserId) {
@@ -249,10 +333,7 @@ export const commentService = {
 
 	// 댓글 삭제
 	async deleteComment(commentId) {
-		const { error } = await supabase
-			.from('comments')
-			.delete()
-			.eq('id', commentId);
+		const { error } = await supabase.from('comments').delete().eq('id', commentId);
 
 		if (error) throw error;
 	},

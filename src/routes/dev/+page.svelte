@@ -1,13 +1,13 @@
 <script lang="ts">
-	import PageHeader from '../../lib/components/PageHeader.svelte';
-	import PostCard from '../../lib/components/PostCard.svelte';
+	import PageHeader from '../../lib/components/common/PageHeader.svelte';
+	import PostCard from '../../lib/components/dev-log/PostCard.svelte';
 
 	export let data;
 </script>
 
 <svelte:head>
-	<title>블로그 - naroso-o.blog</title>
-	<meta name="description" content="developer naroso-o's blog" />
+	<title>naroso-o 개발 로그</title>
+	<meta name="description" content="developer naroso-o's dev log" />
 </svelte:head>
 
 <div class="max-w-6xl mx-auto px-4 py-8">
