@@ -4,7 +4,7 @@
 </script>
 
 <section
-	class="relative text-center py-24 px-8 bg-background-gradient text-primary -mx-8 mb-12 overflow-hidden"
+	class="w-full relative text-center py-24 bg-background-gradient text-primary mb-12 overflow-hidden"
 >
 	<!-- 움직이는 빗방울 배경 애니메이션 -->
 	<div class="absolute inset-0 overflow-hidden">
