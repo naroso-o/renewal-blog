@@ -35,7 +35,7 @@
 <!-- 최신 포스트 섹션 -->
 {#if recentPosts.length > 0}
 	<HeroSection title="📝 최근 글" moreLink={`${base}/dev`}>
-		<div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+		<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
 			{#each recentPosts as post}
 				<div class="place-self-center">
 					<PostCard {post} href={`${base}/dev/${post.slug}`} />

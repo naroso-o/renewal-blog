@@ -15,7 +15,7 @@
 </script>
 
 <article
-	class={`max-w-sm rounded-xl bg-card-bg border border-primary shadow-md transition-all duration-300 hover:-translate-y-1 hover:shadow-lg overflow-hidden flex flex-col ${
+	class={`w-84 rounded-xl bg-card-bg border border-primary shadow-md transition-all duration-300 hover:-translate-y-1 hover:shadow-lg overflow-hidden flex flex-col ${
 		isGradient ? 'bg-background-gradient' : ''
 	}`}
 >
