@@ -626,11 +626,19 @@
 				>
 					<div class="flex items-start gap-3">
 						{#if comment.author_type === 'github' && comment.github_avatar_url}
-							<img
-								src={comment.github_avatar_url}
-								alt={comment.author_name}
-								class="w-10 h-10 rounded-full flex-shrink-0"
-							/>
+							<a
+								href="https://github.com/{comment.github_username || comment.author_name}"
+								target="_blank"
+								rel="noopener noreferrer"
+								class="flex-shrink-0 transition-opacity hover:opacity-80"
+								title="GitHub 프로필 보기"
+							>
+								<img
+									src={comment.github_avatar_url}
+									alt={comment.author_name}
+									class="w-10 h-10 rounded-full"
+								/>
+							</a>
 						{:else}
 							<div
 								class="w-10 h-10 rounded-full bg-brand-primary/20 flex items-center justify-center flex-shrink-0"
@@ -643,10 +651,26 @@
 
 						<div class="flex-1 min-w-0">
 							<div class="flex items-center gap-2 mb-1">
-								<h4 class="font-medium text-primary">{comment.author_name}</h4>
 								{#if comment.author_type === 'github'}
-									<span
-										class="inline-flex items-center gap-1 px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full"
+									<a
+										href="https://github.com/{comment.github_username || comment.author_name}"
+										target="_blank"
+										rel="noopener noreferrer"
+										class="font-medium text-primary hover:text-brand-primary transition-colors"
+										title="GitHub 프로필 보기"
+									>
+										<h4 class="font-medium">{comment.author_name}</h4>
+									</a>
+								{:else}
+									<h4 class="font-medium text-primary">{comment.author_name}</h4>
+								{/if}
+								{#if comment.author_type === 'github'}
+									<a
+										href="https://github.com/{comment.github_username || comment.author_name}"
+										target="_blank"
+										rel="noopener noreferrer"
+										class="inline-flex items-center gap-1 px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full hover:bg-blue-200 transition-colors"
+										title="GitHub 프로필 보기"
 									>
 										<svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
 											<path
@@ -656,7 +680,15 @@
 											></path>
 										</svg>
 										GitHub
-									</span>
+										<svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+											<path
+												d="M11 3a1 1 0 100 2h2.586l-6.293 6.293a1 1 0 101.414 1.414L15 6.414V9a1 1 0 102 0V4a1 1 0 00-1-1h-5z"
+											></path>
+											<path
+												d="M5 5a2 2 0 00-2 2v6a2 2 0 002 2h6a2 2 0 002-2v-2a1 1 0 10-2 0v2H5V7h2a1 1 0 000-2H5z"
+											></path>
+										</svg>
+									</a>
 								{/if}
 								{#if comment.is_edited}
 									<span class="text-xs text-secondary">(수정됨)</span>
