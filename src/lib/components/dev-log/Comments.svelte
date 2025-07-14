@@ -12,6 +12,7 @@
 	let comments: Comment[] = [];
 	let loading = false;
 	let isSubmitting = false;
+	let isSigningIn = false;
 	let githubUser: any = null;
 	let authMode: 'anonymous' | 'github' = 'anonymous';
 	let showCommentForm = false;
@@ -75,6 +76,25 @@
 	onMount(async () => {
 		await checkGithubAuth();
 		await loadComments();
+		
+		// Auth state change 감지하여 자동으로 상태 업데이트
+		const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
+			if (event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED') {
+				if (session?.user) {
+					githubUser = session.user.user_metadata;
+					isSigningIn = false;
+				}
+			} else if (event === 'SIGNED_OUT') {
+				githubUser = null;
+				authMode = 'anonymous';
+				isSigningIn = false;
+			}
+		});
+		
+		// 컴포넌트 언마운트 시 구독 해제
+		return () => {
+			subscription.unsubscribe();
+		};
 	});
 
 	// GitHub 인증 상태 확인
@@ -84,8 +104,10 @@
 		} = await supabase.auth.getSession();
 		if (session?.user) {
 			githubUser = session.user.user_metadata;
-			console.log('GitHub 사용자 정보:', githubUser);
-			console.log('전체 사용자 정보:', session.user);
+			if (import.meta.env.DEV) {
+				console.log('GitHub 사용자 정보:', githubUser);
+				console.log('전체 사용자 정보:', session.user);
+			}
 		}
 	}
 
@@ -95,9 +117,13 @@
 		clearMessage(); // 이전 메시지 상태 초기화
 
 		try {
-			console.log('댓글 로드 시작, postId:', postId);
+			if (import.meta.env.DEV) {
+				console.log('댓글 로드 시작, postId:', postId);
+			}
 			comments = await commentService.getComments(postId);
-			console.log('댓글 로드 성공:', comments);
+			if (import.meta.env.DEV) {
+				console.log('댓글 로드 성공:', comments);
+			}
 		} catch (err: unknown) {
 			const errorMessage = handleError(err, '댓글을 불러오는 중 오류가 발생했습니다.');
 
@@ -115,15 +141,33 @@
 
 	// GitHub 로그인
 	async function signInWithGithub() {
+		if (isSigningIn) return; // 이미 로그인 진행 중이면 중복 실행 방지
+		
+		isSigningIn = true;
 		try {
+			// 환경변수에서 사이트 URL 가져오기, 없으면 현재 URL 사용
+			let siteUrl = import.meta.env.VITE_SITE_URL;
+			
+			// 개발 환경에서는 현재 URL을 사용
+			if (import.meta.env.DEV || !siteUrl) {
+				siteUrl = window.location.origin;
+			}
+			
+			const redirectUrl = `${siteUrl}${window.location.pathname}`;
+			
+
 			const { error } = await supabase.auth.signInWithOAuth({
 				provider: 'github',
 				options: {
-					redirectTo: `${window.location.origin}${window.location.pathname}`
+					redirectTo: redirectUrl
 				}
 			});
 			if (error) throw error;
+			
+			// OAuth 리디렉션이 성공적으로 시작되면 로딩 상태는 유지
+			// (페이지가 리디렉션되므로 isSigningIn = false는 필요 없음)
 		} catch (err: unknown) {
+			isSigningIn = false;
 			handleError(err, 'GitHub 로그인 중 오류가 발생했습니다.');
 		}
 	}
@@ -142,7 +186,9 @@
 
 	// 댓글 작성
 	async function submitComment() {
-		console.log('댓글 작성 시작:', { authMode, postId, githubUser });
+		if (import.meta.env.DEV) {
+			console.log('댓글 작성 시작:', { authMode, postId, githubUser });
+		}
 
 		if (!commentForm.content.trim()) {
 			showError('댓글 내용을 입력해주세요.');
@@ -168,7 +214,9 @@
 		isSubmitting = true;
 		try {
 			if (authMode === 'anonymous') {
-				console.log('익명 댓글 작성 중...');
+				if (import.meta.env.DEV) {
+					console.log('익명 댓글 작성 중...');
+				}
 				const passwordHash = await hashPassword(commentForm.password!);
 				await commentService.createAnonymousComment(
 					postId,
@@ -177,11 +225,15 @@
 					passwordHash
 				);
 			} else if (githubUser) {
-				console.log('GitHub 댓글 작성 중...', githubUser);
+				if (import.meta.env.DEV) {
+					console.log('GitHub 댓글 작성 중...', githubUser);
+				}
 				await commentService.createGithubComment(postId, commentForm.content, githubUser);
 			}
 
-			console.log('댓글 작성 성공');
+			if (import.meta.env.DEV) {
+				console.log('댓글 작성 성공');
+			}
 			// 폼 초기화
 			commentForm = {
 				content: '',
@@ -320,8 +372,50 @@
 	// 인증 모드 변경
 	function switchAuthMode(mode: 'anonymous' | 'github') {
 		authMode = mode;
-		if (mode === 'github' && !githubUser) {
+		if (mode === 'github' && !githubUser && !isSigningIn) {
 			signInWithGithub();
+		}
+	}
+
+	// 개발용 세션 정리 함수
+	async function clearSupabaseSession() {
+		try {
+			if (import.meta.env.DEV) {
+				console.log('Supabase 세션 정리 시작...');
+			}
+			
+			// Supabase 로그아웃
+			await supabase.auth.signOut();
+			
+			// 로컬 스토리지에서 Supabase 관련 데이터 삭제
+			const supabaseKeys = Object.keys(localStorage).filter(key => key.startsWith('sb-'));
+			supabaseKeys.forEach(key => {
+				if (import.meta.env.DEV) {
+					console.log('삭제:', key);
+				}
+				localStorage.removeItem(key);
+			});
+			
+			// 세션 스토리지도 정리
+			const sessionKeys = Object.keys(sessionStorage).filter(key => key.startsWith('sb-'));
+			sessionKeys.forEach(key => {
+				if (import.meta.env.DEV) {
+					console.log('세션 스토리지 삭제:', key);
+				}
+				sessionStorage.removeItem(key);
+			});
+			
+			// 상태 초기화
+			githubUser = null;
+			authMode = 'anonymous';
+			
+			showMessage('세션이 정리되었습니다. 페이지를 새로고침해주세요.', 'success');
+			
+			if (import.meta.env.DEV) {
+				console.log('세션 정리 완료');
+			}
+		} catch (err: unknown) {
+			handleError(err, '세션 정리 중 오류가 발생했습니다.');
 		}
 	}
 </script>
@@ -332,11 +426,20 @@
 			댓글 {#if comments.length > 0}({comments.length}){/if}
 		</h2>
 
-		{#if !showCommentForm}
-			<Button onclick={() => (showCommentForm = true)} variant="primary" size="sm">
-				댓글 작성
-			</Button>
-		{/if}
+		<div class="flex gap-2">
+			{#if !showCommentForm}
+				<Button onclick={() => (showCommentForm = true)} variant="primary" size="sm">
+					댓글 작성
+				</Button>
+			{/if}
+			
+			<!-- 개발 환경에서만 보이는 디버그 버튼 -->
+			{#if import.meta.env.DEV}
+				<Button onclick={clearSupabaseSession} variant="secondary" size="sm">
+					🔧 세션 정리
+				</Button>
+			{/if}
+		</div>
 	</div>
 
 	<!-- 메시지 표시 -->
@@ -444,7 +547,18 @@
 					</div>
 				{:else}
 					<div class="text-center py-4">
-						<Button onclick={signInWithGithub} variant="primary" size="md">GitHub로 로그인</Button>
+						<Button 
+							onclick={signInWithGithub} 
+							variant="primary" 
+							size="md"
+							disabled={isSigningIn}
+						>
+							{#if isSigningIn}
+								GitHub 로그인 중...
+							{:else}
+								GitHub로 로그인
+							{/if}
+						</Button>
 					</div>
 				{/if}
 			{/if}
